@@ -2,7 +2,7 @@ package spell;
 
 import character.Character;
 
-public class ExpectoPatronum implements Spell{
+public class ExpectoPatronum implements Spell {
 	private double healing;
 	
 	public ExpectoPatronum(double healing) {
@@ -11,6 +11,6 @@ public class ExpectoPatronum implements Spell{
 
 	@Override
 	public void use(Character character) {
-		character.healthUp(healing);
+		character.healthUp(healing);			
 	}
 }

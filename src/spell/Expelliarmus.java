@@ -11,6 +11,8 @@ public class Expelliarmus implements Spell {
 
 	@Override
 	public void use(Character character) {
-		character.receiveDamage(damage);
+		if (Math.random() < 0.9) {
+			character.receiveDamage(damage);			
+		}
 	}
 }

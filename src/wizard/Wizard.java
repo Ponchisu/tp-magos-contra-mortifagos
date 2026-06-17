@@ -1,6 +1,8 @@
 package wizard;
 
+import character.Character;
+
 public interface Wizard {
-	void attack();
+	void attack(Character character);
 	void support();
 }

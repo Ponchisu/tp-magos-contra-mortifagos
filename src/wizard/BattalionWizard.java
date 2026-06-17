@@ -3,6 +3,8 @@ package wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import character.Character;
+
 public class BattalionWizard implements Wizard {
 	private List<Wizard> wizards;
 	
@@ -15,16 +17,16 @@ public class BattalionWizard implements Wizard {
 	}
 
 	@Override
-	public void attack() {
+	public void attack(Character character) {
 		for (Wizard w : wizards) {
-			w.attack();			
+			w.attack(character);			
 		}
 	}
 
 	@Override
 	public void support() {
 		for (Wizard w : wizards) {
-			w.attack();			
+			w.support();			
 		}
 	}
 

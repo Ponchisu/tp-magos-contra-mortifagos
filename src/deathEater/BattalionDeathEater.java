@@ -3,6 +3,8 @@ package deathEater;
 import java.util.ArrayList;
 import java.util.List;
 
+import character.Character;
+
 public class BattalionDeathEater implements DeathEater {
 	private List<DeathEater> deathEaters;
 	
@@ -11,16 +13,16 @@ public class BattalionDeathEater implements DeathEater {
 	}
 
 	@Override
-	public void darkAttack() {
+	public void darkAttack(Character character) {
 		for(DeathEater deathEater : deathEaters) {
-			deathEater.darkAttack();
+			deathEater.darkAttack(character);
 		}
 	}
 
 	@Override
-	public void specialSpell() {
+	public void specialSpell(Character character) {
 		for(DeathEater deathEater : deathEaters) {
-			deathEater.specialSpell();
+			deathEater.specialSpell(character);
 		}
 	}
 
