@@ -2,11 +2,11 @@ package spell;
 
 import character.Character;
 
-public class Protego extends Spell {
+public class Titillando extends Spell {
 	private int defense;
 	
-	public Protego() {
-		super("Protego", SpellType.SUPPORT, SpellCategory.DEFENSE, 1);
+	public Titillando() {
+		super("Protego", SpellType.OFFENSIVE, SpellCategory.DEFENSE, 1);
 		this.defense = 40;
 	}
 	
