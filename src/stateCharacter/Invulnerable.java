@@ -1,4 +1,4 @@
-package StateCharacter;
+package stateCharacter;
 
 import character.Character;
 import exceptions.AutoAttackException;
@@ -6,7 +6,13 @@ import exceptions.SpellTypeException;
 import spell.Spell;
 import spell.SpellType;
 
-public class Idle extends StateCharacter {
+public class Invulnerable extends StateCharacter {
+	private int duration;
+
+	public Invulnerable(int duration) {
+		this.duration = duration;
+	}
+
 	@Override
 	public StateCharacter attack(Character attacker, Character target, String spellName) {
 		if(attacker == null || target == null) {
@@ -29,7 +35,15 @@ public class Idle extends StateCharacter {
 		
 		spell.use(attacker, target);
 		
-		return this;
+		duration --;
+		
+		if(duration > 0) {
+			System.out.println(attacker.getName() + " seguira siendo invulnerable por " + duration + " turnos");
+			return this;
+		} else {
+			System.out.println(attacker.getName() + " dejo de ser invulnerable");
+			return new Idle();
+		}
 	}
 
 	@Override
@@ -54,49 +68,55 @@ public class Idle extends StateCharacter {
 		
 		spell.use(support, target);
 		
-		return this;
-	}
-	
-	@Override
-	public StateCharacter receiveDamage(Character character, int damage) {
-		character.healthDown(damage);
+		duration --;
 		
-		if(character.getHealthPoints() == 0) {
-			System.out.println(character.getName() + " ha muerto");
-			return new Death();
-		} else {
+		if(duration > 0) {
+			System.out.println(support.getName() + " seguira siendo invulnerable por " + duration + " turnos");
 			return this;
+		} else {
+			System.out.println(support.getName() + " dejo de ser invulnerable");
+			return new Idle();
 		}
 	}
 	
 	@Override
-	public StateCharacter stun(Character character, int duration) {
-		System.out.println(character.getName() + " fue stuneado por " + duration + " turnos");
-		return new Stuneed(duration);
+	public StateCharacter receiveDamage(Character character, int damage) {
+		System.out.println(character.getName() + " detuvo el ataque");
+		System.out.println(character.getName() + " ya no es invulnerable");
+		
+		return new Idle();
 	}
 	
 	@Override
-	public StateCharacter invulnerability(Character character, int duration) {
-		System.out.println(character.getName() + " es invulnerable por " + duration + " turnos");
-		return new Invulnerable(duration);
+	public StateCharacter stun(Character character, int duration) {
+		System.out.println(character.getName() + "detuvo el stun");
+		System.out.println(character.getName() + " ya no es invulnerable");
+		
+		return new Idle();
 	}
 	
 	@Override
 	public StateCharacter burnt(Character character, int fireDamage, int duration) {
-		System.out.println(character.getName() + " esta incendiado por " + duration + " turnos");
-		return new Burned(fireDamage, duration);
+		System.out.println(character.getName() + " detuvo la quemadura");
+		System.out.println(character.getName() + " ya no es invulnerable");
+		
+		return new Idle();
 	}
 	
 	@Override
 	public StateCharacter wounded(Character character, int bleendingDamage, int duration) {
-		System.out.println(character.getName() + " esta sangrando por " + duration + " turnos");
-		return new Wounded(bleendingDamage, duration);
+		System.out.println(character.getName() + " detuvo el sangrado");
+		System.out.println(character.getName() + " ya no es invulnerable");
+		
+		return new Idle();
 	}
 	
 	@Override
 	public StateCharacter electrocute(Character character, int electricDamage, int duration) {
-		System.out.println(character.getName() + " esta electrocutado por " + duration + " turnos");
-		return new Electrocuted(electricDamage, duration);
+		System.out.println(character.getName() + " detuvo la electricidad");
+		System.out.println(character.getName() + " ya no es invulnerable");
+		
+		return new Idle();
 	}
 	
 	@Override
@@ -107,7 +127,9 @@ public class Idle extends StateCharacter {
 	
 	@Override
 	public StateCharacter confuse(Character character, int duration) {
-		System.out.println(character.getName() + " esta confundido por " + duration + " turnos");
-		return new Confused(duration);
+		System.out.println(character.getName() + "detuvo la confusion");
+		System.out.println(character.getName() + " ya no es invulnerable");
+		
+		return new Idle();
 	}
 }

@@ -1,4 +1,4 @@
-package StateCharacter;
+package stateCharacter;
 
 import character.Character;
 import exceptions.AutoAttackException;

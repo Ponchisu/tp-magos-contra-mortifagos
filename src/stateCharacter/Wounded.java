@@ -1,4 +1,4 @@
-package StateCharacter;
+package stateCharacter;
 
 import character.Character;
 import exceptions.AutoAttackException;
@@ -6,12 +6,12 @@ import exceptions.SpellTypeException;
 import spell.Spell;
 import spell.SpellType;
 
-public class Burned extends StateCharacter {
-	private int fireDamage;
+public class Wounded extends StateCharacter {
+	private int bleendingDamage;
 	private int duration;
 	
-	public Burned(int fireDamage, int duration) {
-		this.fireDamage = fireDamage;
+	public Wounded(int bleendingDamage, int duration) {
+		this.bleendingDamage = bleendingDamage;
 		this.duration = duration;
 	}
 
@@ -38,18 +38,18 @@ public class Burned extends StateCharacter {
 		spell.use(attacker, target);
 		
 		duration --;
-		System.out.println(attacker.getName() + " recibio " + fireDamage + " de daño fuego");
-		attacker.healthDown(fireDamage);
+		System.out.println(attacker.getName() + " recibio " + bleendingDamage + " de daño sangrado");
+		attacker.healthDown(bleendingDamage);
 		
 		if(attacker.getHealthPoints() == 0) {
 			System.out.println(attacker.getName() + " ha muerto");
 			return new Death();
 		} else {
 			if(duration > 0) {
-				System.out.println(attacker.getName() + " seguira incendiado por " + duration + " turnos");
+				System.out.println(attacker.getName() + " seguira sangrando por " + duration + " turnos");
 				return this;
 			} else {
-				System.out.println(attacker.getName() + " dejo de estar incendiado");
+				System.out.println(attacker.getName() + " dejo de estar sangrando");
 				return new Idle();
 			}
 		}
@@ -78,23 +78,23 @@ public class Burned extends StateCharacter {
 		spell.use(support, target);
 		
 		duration --;
-		System.out.println(support.getName() + " recibio " + fireDamage + " de daño fuego");
-		support.healthDown(fireDamage);
+		System.out.println(support.getName() + " recibio " + bleendingDamage + " de daño sangrado");
+		support.healthDown(bleendingDamage);
 		
 		if(support.getHealthPoints() == 0) {
 			System.out.println(support.getName() + " ha muerto");
 			return new Death();
 		} else {
 			if(duration > 0) {
-				System.out.println(support.getName() + " seguira incendiado por " + duration + " turnos");
+				System.out.println(support.getName() + " seguira sangrando por " + duration + " turnos");
 				return this;
 			} else {
-				System.out.println(support.getName() + " dejo de estar incendiado");
+				System.out.println(support.getName() + " dejo de estar sangrando");
 				return new Idle();
 			}
 		}
 	}
-	
+
 	@Override
 	public StateCharacter receiveDamage(Character character, int damage) {
 		character.healthDown(damage);
@@ -107,8 +107,9 @@ public class Burned extends StateCharacter {
 		}
 	}
 	
+	@Override
 	public StateCharacter cleanState(Character character) {
-		System.out.println(character.getName() + " dejo de estar incendiado");
+		System.out.println(character.getName() + " dejo de estar sangrando");
 		return new Idle();
 	}
 	
@@ -120,12 +121,12 @@ public class Burned extends StateCharacter {
 	
 	@Override
 	public StateCharacter invulnerability(Character character, int duration) {
-		System.out.println(character.getName() + " dejo de estar incendiado");
+		System.out.println(character.getName() + " dejo de estar sangrando");
 		return new Idle();
 	}
 	
 	@Override
-	public StateCharacter wounded(Character character, int bleendingDamage, int duration) {
+	public StateCharacter burnt(Character character, int fireDamage, int duration) {
 		System.out.println(character.getName() + " recibio 100 de daño de tecnico");
 		
 		character.healthDown(100);
@@ -134,22 +135,22 @@ public class Burned extends StateCharacter {
 			System.out.println(character.getName() + " ha muerto");
 			return new Death();
 		} else {
-			System.out.println(character.getName() + " dejo de estar incendiado");
+			System.out.println(character.getName() + " dejo estar sangrando");
 			return new Idle();
 		}
 	}
 	
 	@Override
 	public StateCharacter electrocute(Character character, int electricDamage, int duration) {
-		System.out.println(character.getName() + " recibio 400 de daño de tecnico");
+		System.out.println(character.getName() + " recibio 100 de daño de tecnico");
 		
-		character.healthDown(400);
+		character.healthDown(100);
 		
 		if(character.getHealthPoints() == 0) {
 			System.out.println(character.getName() + " ha muerto");
 			return new Death();
 		} else {
-			System.out.println(character.getName() + " dejo de estar incendiado");
+			System.out.println(character.getName() + " dejo de estar sangrando");
 			return new Idle();
 		}
 	}

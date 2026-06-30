@@ -1,4 +1,4 @@
-package StateCharacter;
+package stateCharacter;
 
 import character.Character;
 import exceptions.AutoAttackException;
@@ -6,10 +6,12 @@ import exceptions.SpellTypeException;
 import spell.Spell;
 import spell.SpellType;
 
-public class Stuneed extends StateCharacter {
+public class Electrocuted extends StateCharacter {
+	private int electricDamage;
 	private int duration;
 	
-	public Stuneed(int duration) {
+	public Electrocuted(int electricDamage, int duration) {
+		this.electricDamage = electricDamage;
 		this.duration = duration;
 	}
 
@@ -33,16 +35,23 @@ public class Stuneed extends StateCharacter {
 			throw new SpellTypeException("No pueden supportear a los rivales");
 		}
 		
-		System.out.println("No puedes atacar estando stuneado");
+		spell.use(attacker, target);
 		
 		duration --;
+		System.out.println(attacker.getName() + " recibio " + electricDamage + " de daño electrico");
+		attacker.healthDown(electricDamage);
 		
-		if(duration > 0) {
-			System.out.println(attacker.getName() + " seguira stuneado por " + duration + " turnos");
-			return this;
+		if(attacker.getHealthPoints() == 0) {
+			System.out.println(attacker.getName() + " ha muerto");
+			return new Death();
 		} else {
-			System.out.println(attacker.getName() + " dejo de estar stuneado");
-			return new Idle();
+			if(duration > 0) {
+				System.out.println(attacker.getName() + " seguira electrificado por " + duration + " turnos");
+				return this;
+			} else {
+				System.out.println(attacker.getName() + " dejo de estar electrocutado");
+				return new Idle();
+			}
 		}
 	}
 
@@ -66,19 +75,26 @@ public class Stuneed extends StateCharacter {
 			throw new SpellTypeException("No pueden atacar a los aliados");
 		}
 		
-		System.out.println("No puedes supportear estando stuneado");
+		spell.use(support, target);
 		
 		duration --;
+		System.out.println(support.getName() + " recibio " + electricDamage + " de daño electrico");
+		support.healthDown(electricDamage);
 		
-		if(duration > 0) {
-			System.out.println(support.getName() + " seguira stuneado por " + duration + " turnos");
-			return this;
+		if(support.getHealthPoints() == 0) {
+			System.out.println(support.getName() + " ha muerto");
+			return new Death();
 		} else {
-			System.out.println(support.getName() + " dejo de estar stuneado");
-			return new Idle();
+			if(duration > 0) {
+				System.out.println(support.getName() + " seguira electrificado por " + duration + " turnos");
+				return this;
+			} else {
+				System.out.println(support.getName() + " dejo de estar electrocutado");
+				return new Idle();
+			}
 		}
 	}
-	
+
 	@Override
 	public StateCharacter receiveDamage(Character character, int damage) {
 		character.healthDown(damage);
@@ -91,56 +107,51 @@ public class Stuneed extends StateCharacter {
 		}
 	}
 	
+	@Override
 	public StateCharacter cleanState(Character character) {
-		System.out.println(character.getName() + " dejo de estar stuneado");
+		System.out.println(character.getName() + " dejo de estar electrocutado");
 		return new Idle();
 	}
 	
 	@Override
+	public StateCharacter stun(Character character, int duration) {
+		System.out.println(character.getName() + "fue stuneado por " + duration + " turnos");
+		return new Stuneed(duration);
+	}
+	
+	@Override
 	public StateCharacter invulnerability(Character character, int duration) {
-		System.out.println(character.getName() + " dejo de estar stuneado");
+		System.out.println(character.getName() + " dejo de estan electrocutado");
 		return new Idle();
 	}
 	
 	@Override
 	public StateCharacter burnt(Character character, int fireDamage, int duration) {
-		System.out.println(character.getName() + " recibio " + fireDamage + " de daño de fuego");
+		System.out.println(character.getName() + " recibio 400 de daño de tecnico");
 		
-		character.healthDown(fireDamage);
+		character.healthDown(400);
 		
 		if(character.getHealthPoints() == 0) {
-			System.out.println(character.getName() + " ah muerto");
+			System.out.println(character.getName() + " ha muerto");
 			return new Death();
 		} else {
-			return this;
+			System.out.println(character.getName() + " dejo de electrocutarse");
+			return new Idle();
 		}
 	}
 	
 	@Override
 	public StateCharacter wounded(Character character, int bleendingDamage, int duration) {
-		System.out.println(character.getName() + " recibio " + bleendingDamage + " de daño de sangrado");
+		System.out.println(character.getName() + " recibio 100 de daño de tecnico");
 		
-		character.healthDown(bleendingDamage);
-		
-		if(character.getHealthPoints() == 0) {
-			System.out.println(character.getName() + " ah muerto");
-			return new Death();
-		} else {
-			return this;
-		}
-	}
-	
-	@Override
-	public StateCharacter electrocute(Character character, int electricDamage, int duration) {
-		System.out.println(character.getName() + " recibio " + electricDamage + " de daño electrico");
-		
-		character.healthDown(electricDamage);
+		character.healthDown(100);
 		
 		if(character.getHealthPoints() == 0) {
-			System.out.println(character.getName() + " ah muerto");
+			System.out.println(character.getName() + " ha muerto");
 			return new Death();
 		} else {
-			return this;
+			System.out.println(character.getName() + " dejo de electrocutarse");
+			return new Idle();
 		}
 	}
 	
@@ -148,5 +159,11 @@ public class Stuneed extends StateCharacter {
 	public StateCharacter healing(Character character, int health) {
 		character.healthUp(health);
 		return this;
+	}
+	
+	@Override
+	public StateCharacter confuse(Character character, int duration) {
+		System.out.println(character.getName() + " esta confundido por " + duration + " turnos");
+		return new Confused(duration);
 	}
 }

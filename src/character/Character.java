@@ -1,14 +1,12 @@
 package character;
 
-import java.awt.Taskbar.State;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import StateCharacter.Idle;
-import StateCharacter.StateCharacter;
 import spell.Spell;
 import spell.SpellCategory;
+import stateCharacter.Idle;
+import stateCharacter.StateCharacter;
 
 public abstract class Character {
 	private String name;

@@ -1,4 +1,4 @@
-package StateCharacter;
+package stateCharacter;
 
 import character.Character;
 import exceptions.AutoAttackException;
@@ -6,12 +6,10 @@ import exceptions.SpellTypeException;
 import spell.Spell;
 import spell.SpellType;
 
-public class Wounded extends StateCharacter {
-	private int bleendingDamage;
+public class Stuneed extends StateCharacter {
 	private int duration;
 	
-	public Wounded(int bleendingDamage, int duration) {
-		this.bleendingDamage = bleendingDamage;
+	public Stuneed(int duration) {
 		this.duration = duration;
 	}
 
@@ -35,23 +33,16 @@ public class Wounded extends StateCharacter {
 			throw new SpellTypeException("No pueden supportear a los rivales");
 		}
 		
-		spell.use(attacker, target);
+		System.out.println("No puedes atacar estando stuneado");
 		
 		duration --;
-		System.out.println(attacker.getName() + " recibio " + bleendingDamage + " de daño sangrado");
-		attacker.healthDown(bleendingDamage);
 		
-		if(attacker.getHealthPoints() == 0) {
-			System.out.println(attacker.getName() + " ha muerto");
-			return new Death();
+		if(duration > 0) {
+			System.out.println(attacker.getName() + " seguira stuneado por " + duration + " turnos");
+			return this;
 		} else {
-			if(duration > 0) {
-				System.out.println(attacker.getName() + " seguira sangrando por " + duration + " turnos");
-				return this;
-			} else {
-				System.out.println(attacker.getName() + " dejo de estar sangrando");
-				return new Idle();
-			}
+			System.out.println(attacker.getName() + " dejo de estar stuneado");
+			return new Idle();
 		}
 	}
 
@@ -75,26 +66,19 @@ public class Wounded extends StateCharacter {
 			throw new SpellTypeException("No pueden atacar a los aliados");
 		}
 		
-		spell.use(support, target);
+		System.out.println("No puedes supportear estando stuneado");
 		
 		duration --;
-		System.out.println(support.getName() + " recibio " + bleendingDamage + " de daño sangrado");
-		support.healthDown(bleendingDamage);
 		
-		if(support.getHealthPoints() == 0) {
-			System.out.println(support.getName() + " ha muerto");
-			return new Death();
+		if(duration > 0) {
+			System.out.println(support.getName() + " seguira stuneado por " + duration + " turnos");
+			return this;
 		} else {
-			if(duration > 0) {
-				System.out.println(support.getName() + " seguira sangrando por " + duration + " turnos");
-				return this;
-			} else {
-				System.out.println(support.getName() + " dejo de estar sangrando");
-				return new Idle();
-			}
+			System.out.println(support.getName() + " dejo de estar stuneado");
+			return new Idle();
 		}
 	}
-
+	
 	@Override
 	public StateCharacter receiveDamage(Character character, int damage) {
 		character.healthDown(damage);
@@ -107,51 +91,56 @@ public class Wounded extends StateCharacter {
 		}
 	}
 	
-	@Override
 	public StateCharacter cleanState(Character character) {
-		System.out.println(character.getName() + " dejo de estar sangrando");
+		System.out.println(character.getName() + " dejo de estar stuneado");
 		return new Idle();
 	}
 	
 	@Override
-	public StateCharacter stun(Character character, int duration) {
-		System.out.println(character.getName() + "fue stuneado por " + duration + " turnos");
-		return new Stuneed(duration);
-	}
-	
-	@Override
 	public StateCharacter invulnerability(Character character, int duration) {
-		System.out.println(character.getName() + " dejo de estar sangrando");
+		System.out.println(character.getName() + " dejo de estar stuneado");
 		return new Idle();
 	}
 	
 	@Override
 	public StateCharacter burnt(Character character, int fireDamage, int duration) {
-		System.out.println(character.getName() + " recibio 100 de daño de tecnico");
+		System.out.println(character.getName() + " recibio " + fireDamage + " de daño de fuego");
 		
-		character.healthDown(100);
+		character.healthDown(fireDamage);
 		
 		if(character.getHealthPoints() == 0) {
-			System.out.println(character.getName() + " ha muerto");
+			System.out.println(character.getName() + " ah muerto");
 			return new Death();
 		} else {
-			System.out.println(character.getName() + " dejo estar sangrando");
-			return new Idle();
+			return this;
+		}
+	}
+	
+	@Override
+	public StateCharacter wounded(Character character, int bleendingDamage, int duration) {
+		System.out.println(character.getName() + " recibio " + bleendingDamage + " de daño de sangrado");
+		
+		character.healthDown(bleendingDamage);
+		
+		if(character.getHealthPoints() == 0) {
+			System.out.println(character.getName() + " ah muerto");
+			return new Death();
+		} else {
+			return this;
 		}
 	}
 	
 	@Override
 	public StateCharacter electrocute(Character character, int electricDamage, int duration) {
-		System.out.println(character.getName() + " recibio 100 de daño de tecnico");
+		System.out.println(character.getName() + " recibio " + electricDamage + " de daño electrico");
 		
-		character.healthDown(100);
+		character.healthDown(electricDamage);
 		
 		if(character.getHealthPoints() == 0) {
-			System.out.println(character.getName() + " ha muerto");
+			System.out.println(character.getName() + " ah muerto");
 			return new Death();
 		} else {
-			System.out.println(character.getName() + " dejo de estar sangrando");
-			return new Idle();
+			return this;
 		}
 	}
 	
@@ -159,11 +148,5 @@ public class Wounded extends StateCharacter {
 	public StateCharacter healing(Character character, int health) {
 		character.healthUp(health);
 		return this;
-	}
-	
-	@Override
-	public StateCharacter confuse(Character character, int duration) {
-		System.out.println(character.getName() + " esta confundido por " + duration + " turnos");
-		return new Confused(duration);
 	}
 }
