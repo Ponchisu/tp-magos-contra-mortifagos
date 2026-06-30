@@ -1,5 +1,7 @@
 package spell;
 
+import java.util.Objects;
+
 import character.Character;
 
 public abstract class Spell {
@@ -31,5 +33,22 @@ public abstract class Spell {
 		return accuracy;
 	}
 	
-	abstract void use(Character caster, Character target);
+	public abstract void use(Character caster, Character target);
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Spell other = (Spell) obj;
+		return Objects.equals(name, other.name);
+	}
 }

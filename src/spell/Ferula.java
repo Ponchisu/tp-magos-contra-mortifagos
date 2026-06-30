@@ -11,10 +11,10 @@ public class Ferula extends Spell {
 	}
 
 	@Override
-	void use(Character caster, Character target) {
+	public void use(Character caster, Character target) {
 
 		System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 			
-		target.healthUp(healing + caster.getMagicLevel() * 1.5 + caster.getAffinity(getCategory()));
+		target.healthUp((int) (healing + caster.getMagicLevel() * 1.5 + caster.getAffinity(getCategory())));
 	}
 }

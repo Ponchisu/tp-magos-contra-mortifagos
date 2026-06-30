@@ -9,9 +9,8 @@ import spell.Protego;
 
 public class WizardAuror extends Character implements Wizard {
 	public WizardAuror() {
-		super();
+		super("WizardAuror");
 		Random random = new Random();
-		name = "WizardAuror";
 		magicLevel = random.nextInt(29) + 30;
 		healthPoints = 100 + (30 * magicLevel);
 		
@@ -30,5 +29,11 @@ public class WizardAuror extends Character implements Wizard {
 	public void support() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getAffinity() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

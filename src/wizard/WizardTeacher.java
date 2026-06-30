@@ -9,9 +9,8 @@ import spell.Protego;
 
 public class WizardTeacher extends Character implements Wizard {
 	public WizardTeacher() {
-		super();
+		super("WizardTeacher");
 		Random random = new Random();
-		name = "WizardTeacher";
 		magicLevel = random.nextInt(15) + 16;
 		healthPoints = 100 + (30 * magicLevel);
 		

@@ -13,7 +13,7 @@ public class Fieldfyre extends Spell {
 	}
 
 	@Override
-	void use(Character caster, Character target) {
+	public void use(Character caster, Character target) {
 		if(Math.random() < (this.getAccuracy() + caster.getAccuracy()) / 2) {
 			System.out.println(caster.getName() + " le acerto " + this.getName() + " a " + target.getName());
 			

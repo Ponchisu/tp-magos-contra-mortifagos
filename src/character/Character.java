@@ -1,59 +1,103 @@
 package character;
 
+import java.awt.Taskbar.State;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import StateCharacter.Idle;
+import StateCharacter.StateCharacter;
 import spell.Spell;
 import spell.SpellCategory;
 
 public abstract class Character {
 	private String name;
 	private int magicLevel;
-	protected int healthPoints;
-	protected int defense;
+	private int healthPoints;
+	private int defense;
 	private double accuracy;
 	private int defenseBuff;
-	protected int defenseBuffDuration;
-	protected List<Spell> spells;
+	private int defenseBuffDuration;
+	private int defenseNerf;
+	private int defenseNerfDuration;
+	protected StateCharacter state;
+	private List<Spell> spells;
 	
-	public Character(String name, double accuracy) {
-		name = "Character";
-		magicLevel = 1;
-		healthPoints = 100;
-		defense = 0;
+	public Character(String name, int magicLevel, int healthPoints, int defense, double accuracy) {
+		this.name = name;
+		this.magicLevel = magicLevel;
+		this.healthPoints = healthPoints;
+		this.defense = defense;
+		this.accuracy = accuracy;
 		defenseBuff = 0;
 		defenseBuffDuration = 0;
-		this.accuracy = accuracy;
+		defenseNerf = 0;
+		defenseNerfDuration = 0;
+		state = new Idle();
 		spells = new ArrayList<Spell>();
 	}
 	
-	public void receiveDamage(double damage) {
-		if (defenseBuffDuration > 0) {
-			defenseBuffDuration --;			
-		} else if(defenseBuff == 0) {
-			defenseBuff = 0;
-		}
-		
-		healthPoints -= damage - getDefense() * 0.25;
-	}
 	
 	public void increaseDefense(int defense, int duration) {
+		if(defense < 0) {
+			throw new IllegalArgumentException("La defensa no puede ser negativa");
+		}
+		
+		if(duration < 0) {
+			throw new IllegalArgumentException("La duracion no puede ser negativa");
+		}
+		
 		defenseBuffDuration = duration;
-		this.defenseBuff += defense;
+		defenseBuff = defense;
 	}
 	
 	public void decreaseDefense(int defense, int duration) {
-		defenseBuffDuration = duration;
-		if(defense > this.defense) {
-			defenseBuff = this.defense;
+		if(defense < 0) {
+			throw new IllegalArgumentException("La defensa no puede ser negativa");
+		}
+		
+		if(duration < 0) {
+			throw new IllegalArgumentException("La duracion no puede ser negativa");
+		}
+		
+		defenseNerfDuration = duration;
+		defenseNerf = defense * -1;
+	}
+	
+	public void healthUp(int health) {
+		if(health < 0) {
+			throw new IllegalArgumentException("La vida no puede ser negativa");
+		}
+		
+		this.healthPoints += health;
+	}
+	
+	public void healthDown(int health) {
+		if(health < 0) {
+			throw new IllegalArgumentException("La vida no puede ser negativa");
+		}
+		
+		if(healthPoints < health) {
+			healthPoints = 0;
 		} else {
-			defenseBuff = defense;
+			healthPoints -= health;
 		}
 	}
 	
-	public void healthUp(double health) {
-		this.healthPoints += health;
+	public boolean addSpell(Spell spell) {
+		return spells.add(spell);
 	}
+	
+	public Spell getSpell(String spellName) {
+		for(Spell spell : spells) {
+			if(spell.getName().equals(spellName)) {
+				return spell;
+			}
+		}
+		return null;
+	}
+
+	public abstract int getAffinity(SpellCategory category);
 
 	public String getName() {
 		return name;
@@ -68,7 +112,7 @@ public abstract class Character {
 	}
 	
 	public int getDefense() {
-		return defense + defenseBuff;
+		return defense + defenseBuff - defenseNerf;
 	}
 	
 	public double getAccuracy() {
@@ -83,5 +127,19 @@ public abstract class Character {
 		return spells;
 	}
 	
-	public abstract int getAffinity(SpellCategory category);
+	public void receiveDamage(int damage) {
+		if(defenseBuffDuration > 0) {
+			defenseBuffDuration --;			
+		} else {
+			defenseBuff = 0;
+		}
+		
+		if(defenseNerfDuration > 0) {
+			defenseNerfDuration --;
+		} else {
+			defenseNerf = 0;
+		}
+		
+		healthPoints -= damage - getDefense() * 0.25;
+	}
 }

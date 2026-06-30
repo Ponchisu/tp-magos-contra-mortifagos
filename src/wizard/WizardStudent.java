@@ -8,9 +8,8 @@ import spell.Expelliarmus;
 
 public class WizardStudent extends Character implements Wizard {
 	public WizardStudent() {
-		super();
+		super("WizardStudent");
 		Random random = new Random();
-		name = "WizardStudent";
 		magicLevel = random.nextInt(10) + 1;
 		healthPoints = 100 + (15 * magicLevel);
 
@@ -28,5 +27,11 @@ public class WizardStudent extends Character implements Wizard {
 	public void support() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getAffinity() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

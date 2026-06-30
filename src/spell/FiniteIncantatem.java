@@ -9,7 +9,7 @@ public class FiniteIncantatem extends Spell {
 	}
 
 	@Override
-	void use(Character caster, Character target) {
+	public void use(Character caster, Character target) {
 		
 		System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 		
