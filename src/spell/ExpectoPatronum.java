@@ -3,7 +3,7 @@ package spell;
 import character.Character;
 
 public class ExpectoPatronum extends Spell {
-	private double stunDuration;
+	private int stunDuration;
 	
 	public ExpectoPatronum() {
 		super("ExpectoPatronum", SpellType.SUPPORT, SpellCategory.LIGHT, 0.95);
@@ -15,7 +15,7 @@ public class ExpectoPatronum extends Spell {
 		if(Math.random() < (this.getAccuracy() + caster.getAccuracy()) / 2) {
 			System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 			
-			// Stunear -- stunDuration;
+			target.stun(stunDuration);
 			
 		} else {
 			System.out.println(caster.getName() + " no le acerto " + this.getName() + " a " + target.getName());

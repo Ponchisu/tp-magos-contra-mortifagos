@@ -94,6 +94,10 @@ public abstract class Character {
 		}
 		return null;
 	}
+	
+	public boolean isLive() {
+		return this.state.isLive();
+	}
 
 	public abstract int getAffinity(SpellCategory category);
 
@@ -139,5 +143,37 @@ public abstract class Character {
 		}
 		
 		healthPoints -= damage - getDefense() * 0.25;
+	}
+	
+	public void stun(int duration) {
+		state = state.stun(this, duration);
+	}
+	
+	public void invulnerability(int duration) {
+		state = state.invulnerability(this, duration);
+	}
+	
+	public void burnt(int fireDamage, int duration) {
+		state = state.burnt(this, fireDamage, duration);
+	}
+	
+	public void cleanState() {
+		state = state.cleanState(this);
+	}
+	
+	public void wounded(int bleendingDamage, int duration) {
+		state = state.wounded(this, bleendingDamage, duration);
+	}
+	
+	public void electrocute(int electricDamage, int duration) {
+		state = state.electrocute(this, electricDamage, duration);
+	}
+	
+	public void healing(int health) {
+		state = state.healing(this, health);
+	}
+	
+	public void confuse(int duration) {
+		state = state.confuse(this, duration);
 	}
 }

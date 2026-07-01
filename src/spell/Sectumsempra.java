@@ -19,7 +19,7 @@ public class Sectumsempra extends Spell {
 			
 			target.receiveDamage(damage + caster.getMagicLevel() + caster.getAffinity(getCategory()) * 4);
 			
-			// Wounded -- bleedingDamage + caster.getMagicLevel() / 2 -- 1 + caster.getAffinity(getCategory()) / 10
+			target.wounded(bleedingDamage + caster.getMagicLevel() / 2 , 1 + caster.getAffinity(getCategory()) / 10);
 			
 		} else {
 			System.out.println(caster.getName() + " no le acerto " + this.getName() + " a " + target.getName());

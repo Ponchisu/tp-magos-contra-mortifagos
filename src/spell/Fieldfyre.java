@@ -20,7 +20,7 @@ public class Fieldfyre extends Spell {
 			target.receiveDamage(damage + 2 * caster.getMagicLevel());
 			
 			if(Math.random() < (caster.getAffinity(getCategory()) / 10)) {
-				// Burnt fireDamage + caster.getMagicLevel() / 2 -- 1 + caster.getAffinity(getCategory()) / 10
+				target.burnt(fireDamage + caster.getMagicLevel() / 2, 1 + caster.getAffinity(getCategory()) / 10);
 			}
 			
 		} else {

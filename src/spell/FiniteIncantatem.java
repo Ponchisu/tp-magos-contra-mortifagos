@@ -16,10 +16,10 @@ public class FiniteIncantatem extends Spell {
 		
 		if(caster.getAffinity(getCategory()) < 10) {
 			if(Math.random() < 0.5) {
-				/// CleanState
+				target.cleanState();
 			}
 		} else {
-			// CleanState			
+			target.cleanState();
 		}
 	}
 }

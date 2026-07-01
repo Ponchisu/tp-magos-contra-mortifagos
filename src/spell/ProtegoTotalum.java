@@ -13,9 +13,9 @@ public class ProtegoTotalum  extends Spell {
 		System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());	
 		
 		if (caster.getAffinity(getCategory()) < 25) {
-			// Invulnerable por 1 turno
+			target.invulnerability(1);
 		} else {
-			// Invulnerable por 3 turnos
+			target.invulnerability(3);
 		}
 	}
 }

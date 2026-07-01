@@ -19,7 +19,7 @@ public class TempestJinx extends Spell {
 			target.receiveDamage(damage + 2 * caster.getMagicLevel());
 			
 			if(Math.random() < (caster.getAffinity(getCategory()) / 10)) {
-				// Electrocutar electricDamage + caster.getMagicLevel() / 2 -- 1 + caster.getAffinity(getCategory()) / 10
+				target.electrocute(electricDamage + caster.getMagicLevel() / 2, 1 + caster.getAffinity(getCategory()) / 10);
 			}
 			
 		} else {

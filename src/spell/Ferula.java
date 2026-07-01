@@ -15,6 +15,6 @@ public class Ferula extends Spell {
 
 		System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 			
-		target.healthUp((int) (healing + caster.getMagicLevel() * 1.5 + caster.getAffinity(getCategory())));
+		target.healthUp((healing + (int)(caster.getMagicLevel() * 1.5) + caster.getAffinity(getCategory())));
 	}
 }
