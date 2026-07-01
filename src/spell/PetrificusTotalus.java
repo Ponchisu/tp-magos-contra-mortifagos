@@ -2,10 +2,10 @@ package spell;
 
 import character.Character;
 
-public class PertificusTotalus extends Spell {
+public class PetrificusTotalus extends Spell {
 	private int stunDuration;
 	
-	public PertificusTotalus() {
+	public PetrificusTotalus() {
 		super("Pertificus Totalus", SpellType.SUPPORT, SpellCategory.LIGHT, 0.95);
 		stunDuration = 1;
 	}

@@ -13,17 +13,16 @@ public class BattalionDeathEater implements DeathEater {
 	}
 
 	@Override
-	public void darkAttack(Character character) {
+	public void darkAttack(Character target, String spellName) {
 		for(DeathEater deathEater : deathEaters) {
-			deathEater.darkAttack(character);
+			deathEater.darkAttack(target, spellName);
 		}
 	}
 
 	@Override
-	public void specialSpell(Character character) {
+	public void specialSpell(Character target, String spellName)  {
 		for(DeathEater deathEater : deathEaters) {
-			deathEater.specialSpell(character);
+			deathEater.darkAttack(target, spellName);
 		}
 	}
-
 }

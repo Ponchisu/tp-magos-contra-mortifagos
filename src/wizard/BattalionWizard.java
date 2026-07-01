@@ -17,16 +17,16 @@ public class BattalionWizard implements Wizard {
 	}
 
 	@Override
-	public void attack(Character character) {
+	public void attack(Character target, String nameSpell) {
 		for (Wizard w : wizards) {
-			w.attack(character);			
+			w.attack(target, nameSpell);			
 		}
 	}
 
 	@Override
-	public void support() {
+	public void support(Character targert, String nameSpell) {
 		for (Wizard w : wizards) {
-			w.support();			
+			w.support(targert, nameSpell);			
 		}
 	}
 

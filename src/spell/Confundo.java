@@ -13,7 +13,7 @@ public class Confundo extends Spell {
 		if(Math.random() < this.getAccuracy()) {
 			System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 			
-			if (caster.getAffinity(getCategory()) < 30) {
+			if (caster.getAffinity(getCategory()) <= 30) {
 				target.confuse(1);
 			} else {
 				target.confuse(3);
