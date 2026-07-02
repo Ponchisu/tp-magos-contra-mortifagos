@@ -384,6 +384,11 @@ public class BattalionDeathEater extends DeathEater {
 
 	@Override
 	public String toString() {
-		return getName() + "\n[deathEaters=" + deathEaters + "]";
+		String string = getName() + " {\n";
+		for(DeathEater deathEater : deathEaters) {
+			string = string + deathEater.toString() + "\n";
+		}
+		string = string + "}";
+		return string;
 	}	
 }

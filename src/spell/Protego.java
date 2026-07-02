@@ -8,7 +8,7 @@ public class Protego extends Spell {
 	
 	public Protego() {
 		super("Protego", SpellType.SUPPORT, SpellCategory.DEFENSE, 1);
-		this.defense = 40;
+		this.defense = 1;
 	}
 	
 	@Override
@@ -16,6 +16,6 @@ public class Protego extends Spell {
 		
 		System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 		
-		target.increaseDefense(defense + (caster.getAffinity(getCategory()) / 5) * caster.getMagicLevel(), 3);
+		target.increaseDefense(defense + (caster.getAffinity(getCategory()) / 5), 3);
 	}
 }

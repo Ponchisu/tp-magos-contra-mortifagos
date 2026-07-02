@@ -51,7 +51,7 @@ public class WizardTeacher extends Wizard {
 		if(category == SpellCategory.DARK) {
 			return 1;
 		} else if(category == SpellCategory.LIGHT) {
-			return 30;
+			return 80;
 		} else if(category == SpellCategory.HEAL) {
 			return 60;
 		} else if(category == SpellCategory.DEFENSE) {

@@ -16,7 +16,7 @@ public class WizardStudent extends Wizard {
 		SpellCreator spellCreator;
 		int magicLevel;
 		int healthPoints;
-		magicLevel = random.nextInt(10) + 1;
+		magicLevel = random.nextInt(15) + 16;
 		healthPoints = 100 + (15 * magicLevel);
 		super("WizardStudent", magicLevel, healthPoints, 10, 0.7);
 		
@@ -38,7 +38,7 @@ public class WizardStudent extends Wizard {
 		if(category == SpellCategory.DARK) {
 			return 1;
 		} else if(category == SpellCategory.LIGHT) {
-			return 10;
+			return 20;
 		} else if(category == SpellCategory.HEAL) {
 			return 30;
 		} else if(category == SpellCategory.DEFENSE) {

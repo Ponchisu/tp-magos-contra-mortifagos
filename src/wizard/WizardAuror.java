@@ -63,7 +63,7 @@ public class WizardAuror extends Wizard {
 		if(category == SpellCategory.DARK) {
 			return 3;
 		} else if(category == SpellCategory.LIGHT) {
-			return 60;
+			return 95;
 		} else if(category == SpellCategory.HEAL) {
 			return 65;
 		} else if(category == SpellCategory.DEFENSE) {

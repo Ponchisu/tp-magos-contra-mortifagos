@@ -22,6 +22,9 @@ public class BatallaMagosVsMortifagos {
         Random startRandom = new Random();
         Random magosRandom = new Random();
         Random mortifagosRandom = new Random();
+        
+        System.out.println(batallonMagos);
+        System.out.println("\n" + batallonMortifagos);
 
         // Ejecutar algunas rondas demostrativas.
         int round = 0;
@@ -70,13 +73,16 @@ public class BatallaMagosVsMortifagos {
             }
             System.out.println();
         }
+        
+        System.out.println(batallonMagos);
+        System.out.println("\n" + batallonMortifagos);
 
         if (batallonMagos.isLive() && !batallonMortifagos.isLive()) {
-            System.out.println("¡Los magos han ganado la batalla!");
+            System.out.println("¡Los magos han ganado la batalla en " + round + " rondas!");
         } else if (!batallonMagos.isLive() && batallonMortifagos.isLive()) {
-            System.out.println("¡Los mortífagos han ganado la batalla!");
+            System.out.println("¡Los mortífagos han ganado la batalla en " + round + " rondas!");
         } else {
-            System.out.println("La batalla terminó en empate técnico.");
+            System.out.println("La batalla terminó en empate técnicoen en " + round + " rondas.");
         }
     }
 }

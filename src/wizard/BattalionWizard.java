@@ -382,8 +382,11 @@ public class BattalionWizard extends Wizard {
 
 	@Override
 	public String toString() {
-		return getName() + "\n[wizards=" + wizards + "]";
+		String string = getName() + " {\n";
+		for(Wizard wizard : wizards) {
+			string = string + wizard.toString() + "\n";
+		}
+		string = string + "}";
+		return string;
 	}
-	
-	
 }

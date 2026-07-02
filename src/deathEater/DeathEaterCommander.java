@@ -21,8 +21,8 @@ public class DeathEaterCommander extends DeathEater {
 		SpellCreator spellCreator;
 		int magicLevel;
 		int healthPoints;
-		magicLevel = random.nextInt(29) + 30;
-		healthPoints = 140 + (36 * magicLevel);
+		magicLevel = random.nextInt(40);
+		healthPoints = 100 + (36 * magicLevel);
 		super("DeathEaterCommander", magicLevel, healthPoints, 34, 0.97);
 		
 		
@@ -57,9 +57,9 @@ public class DeathEaterCommander extends DeathEater {
 	@Override
 	public int getAffinity(SpellCategory category) {
 		if(category == SpellCategory.DARK) {
-			return 65;
+			return 45;
 		} else if(category == SpellCategory.LIGHT) {
-			return 50;
+			return 30;
 		} else if(category == SpellCategory.HEAL) {
 			return 1;
 		} else if(category == SpellCategory.DEFENSE) {

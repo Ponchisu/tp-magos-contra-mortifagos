@@ -7,8 +7,8 @@ public class Titillando extends Spell {
 	private int defense;
 	
 	public Titillando() {
-		super("Protego", SpellType.SPECIAL, SpellCategory.DEFENSE, 1);
-		this.defense = 40;
+		super("Titillando", SpellType.SPECIAL, SpellCategory.DEFENSE, 1);
+		this.defense = 1;
 	}
 	
 	@Override
@@ -16,6 +16,6 @@ public class Titillando extends Spell {
 		
 		System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 		
-		target.increaseDefense(defense + (caster.getAffinity(getCategory()) / 5) * caster.getMagicLevel(), 3);
+		target.decreaseDefense(defense + (caster.getAffinity(getCategory()) / 5), 3);
 	}
 }
