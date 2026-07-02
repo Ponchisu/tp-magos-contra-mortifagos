@@ -45,6 +45,10 @@ public class BattalionWizard extends Wizard {
 		//Recorre los personajes
 	    for (Wizard wizard : wizards) {
 	    	Character objective = target.pickTarget(random);
+	    	
+	    	if(objective == null) {
+	    		return;
+	    	}
 
 			//Seleccion un hechizo aleatorio disponible
 	        Spell spell = getRandomSpell(wizard, SpellType.OFFENSIVE, usedSpells);
@@ -98,6 +102,10 @@ public class BattalionWizard extends Wizard {
 		//Recorre los personajes
 	    for (Wizard wizard : wizards) {
 	    	Character objective = target.pickTarget(random);
+	    	
+	    	if(objective == null) {
+	    		return;
+	    	}
 
 			//Seleccion un hechizo aleatorio disponible
 	        Spell spell = getRandomSpell(wizard, SpellType.SUPPORT, usedSpells);
@@ -362,6 +370,9 @@ public class BattalionWizard extends Wizard {
 	
 	@Override
 	public Character pickTarget(Random random) {
+		if(!this.isLive()) {
+			return null;
+		}
 		Character character = null;
 		do {
 			character = get(random.nextInt(getBattalionSize()));

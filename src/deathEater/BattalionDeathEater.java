@@ -42,6 +42,10 @@ public class BattalionDeathEater extends DeathEater {
 		//Recorre los personajes
 	    for(DeathEater deathEater : deathEaters) {
 	    	Character objective = target.pickTarget(random);
+	    	
+	    	if(objective == null) {
+	    		return;
+	    	}
 
 			//Seleccion un hechizo aleatorio disponible
 	        Spell spell = getRandomSpell(deathEater, SpellType.OFFENSIVE, usedSpells);
@@ -96,6 +100,10 @@ public class BattalionDeathEater extends DeathEater {
 		//Recorre los personajes
 	    for(DeathEater deathEater : deathEaters) {
 	    	Character objective = target.pickTarget(random);
+	    	
+	    	if(objective == null) {
+	    		return;
+	    	}
 
 			//Seleccion un hechizo aleatorio disponible
 	        Spell spell = getRandomSpell(deathEater, SpellType.SPECIAL, usedSpells);
@@ -364,6 +372,9 @@ public class BattalionDeathEater extends DeathEater {
 
 	@Override
 	public Character pickTarget(Random random) {
+		if(!this.isLive()) {
+			return null;
+		}
 		Character character = null;
 		do {
 			character = get(random.nextInt(getBattalionSize()));

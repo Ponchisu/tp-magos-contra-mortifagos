@@ -2,11 +2,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import character.Character;
 import exceptions.AutoAttackException;
-//import exceptions.InvalidSpellTypeException;
+import exceptions.InvalidSpellTypeException;
 import spell.SpellCategory;
-import spell.SpellType;
 import wizard.Wizard;
 import wizard.WizardStudent;
 
@@ -48,7 +46,7 @@ class CharacterTest {
 
         // Protego es de tipo SUPPORT, intentar usarlo como ataque debe fallar.
         // assertThrows(InvalidSpellTypeException.class, () -> caster.attack(target, "Protego"));
-        assertThrows(IllegalArgumentException.class, () -> caster.attack(target, "Protego"));
+        assertThrows(InvalidSpellTypeException.class, () -> caster.attack(target, "Protego"));
 
         // No se puede atacarse a uno mismo con un ofensivo
         assertThrows(AutoAttackException.class, () -> caster.attack(caster, "Expelliarmus"));
