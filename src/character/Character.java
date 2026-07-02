@@ -177,7 +177,11 @@ public abstract class Character {
 	}
 	
 	public int getDefense() {
-		return defense + defenseBuff - defenseNerf;
+		if(defense + defenseBuff < defenseNerf) {
+			return 0;
+		} else {
+			return defense + defenseBuff - defenseNerf;			
+		}
 	}
 	
 	public double getAccuracy() {

@@ -17,7 +17,9 @@ public class AvadaKedavra extends Spell {
 			System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 			
 			if(caster.getAffinity(getCategory()) > 10) {
-				target.decreaseDefense(target.getDefense(), 0);
+				target.decreaseDefense(0, 1);
+				target.increaseDefense(0, 1);
+				target.decreaseDefense(target.getDefense(), 1);
 				target.receiveDamage(target.getHealthPoints());
 			} else {
 				target.receiveDamage(damage);
