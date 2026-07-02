@@ -21,7 +21,7 @@ public abstract class DeathEater extends Character {
 		System.out.println("###########################################################################");
 		System.out.println(this.getName() + " Inicio de ataque especial\n\n");		
 		state = state.castSpell(this, target, spells.get(random.nextInt(spells.size())));
-		System.out.println("\n" + this.getName() + " Fin de atque especial");	
+		System.out.println("\n" + this.getName() + " Fin de ataque especial");	
 		System.out.println("###########################################################################\n");
 	}
 	
@@ -30,7 +30,7 @@ public abstract class DeathEater extends Character {
 		System.out.println("###########################################################################");
 		System.out.println(this.getName() + " Inicio de ataque especial\n\n");			
 		state = state.castSpell(this, target, spell);
-		System.out.println("\n" + this.getName() + " Fin de atque especial");	
+		System.out.println("\n" + this.getName() + " Fin de ataque especial");	
 		System.out.println("###########################################################################\n");
 	}
 }

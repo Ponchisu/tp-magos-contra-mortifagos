@@ -68,13 +68,13 @@ public class BattalionWizard extends Wizard {
 			//Se realiza la accion
 			wizard.attack(objective, spell.getName());
 		}
-		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("\n" + this.getName() + " Fin de ataque");	
 		System.out.println("###########################################################################\n");
 	}
 	
 	@Override
 	public void attack(Character target, String spellName) {
-		System.out.println("\n" + this.getName() + " Inicio de atque");	
+		System.out.println("\n" + this.getName() + " Inicio de ataque");	
 		System.out.println("###########################################################################\n");
 		
 		for(Wizard wizard : wizards) {
@@ -84,7 +84,7 @@ public class BattalionWizard extends Wizard {
 				System.out.println(e);
 			}
 		}
-		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("\n" + this.getName() + " Fin de ataque");	
 		System.out.println("###########################################################################\n");
 	}
 	

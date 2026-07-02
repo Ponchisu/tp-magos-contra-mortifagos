@@ -58,7 +58,7 @@ public abstract class Character {
 		System.out.println("###########################################################################");
 		System.out.println(this.getName() + " Inicio de ataque\n\n");	
 		state = state.castSpell(this, target, spells.get(random.nextInt(spells.size())));
-		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("\n" + this.getName() + " Fin de ataque");	
 		System.out.println("###########################################################################\n");
 	}
 	
@@ -68,7 +68,7 @@ public abstract class Character {
 		System.out.println(this.getName() + " Inicio de ataque\n\n");		
 		state = state.castSpell(this, target, spell);
 		System.out.println("");
-		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("\n" + this.getName() + " Fin de ataque");	
 		System.out.println("###########################################################################\n");	
 	}
 	

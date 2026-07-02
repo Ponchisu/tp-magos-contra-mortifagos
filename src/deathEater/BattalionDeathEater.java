@@ -65,7 +65,7 @@ public class BattalionDeathEater extends DeathEater {
 			//Se realiza la accion
 			deathEater.attack(objective, spell.getName());
 		}
-		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("\n" + this.getName() + " Fin de ataque");	
 		System.out.println("###########################################################################\n");
 	}
 	
@@ -81,7 +81,7 @@ public class BattalionDeathEater extends DeathEater {
 				System.out.println(e);
 			}
 		}
-		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("\n" + this.getName() + " Fin de ataque");	
 		System.out.println("###########################################################################\n");	
 	}
 
@@ -123,7 +123,7 @@ public class BattalionDeathEater extends DeathEater {
 			//Se realiza la accion
 			deathEater.specialSpell(objective, spell.getName());
 		}
-		System.out.println("\n" + this.getName() + " Fin de atque especial");	
+		System.out.println("\n" + this.getName() + " Fin de ataque especial");	
 		System.out.println("###########################################################################\n");	
 	}
 	
@@ -139,7 +139,7 @@ public class BattalionDeathEater extends DeathEater {
 				System.out.println(e);
 			}
 		}
-		System.out.println("\n" + this.getName() + " Fin de atque especial");	
+		System.out.println("\n" + this.getName() + " Fin de ataque especial");	
 		System.out.println("###########################################################################\n");
 		}
 
