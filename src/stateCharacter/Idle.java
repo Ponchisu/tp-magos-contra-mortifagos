@@ -2,67 +2,13 @@ package stateCharacter;
 // Representa el estado neutral del personaje.
 
 import character.Character;
-import exceptions.AllyFireException;
-import exceptions.AutoAttackException;
-import exceptions.SpellTypeException;
 import spell.Spell;
-import spell.SpellType;
 
 public class Idle extends StateCharacter {
 	@Override
-	public StateCharacter attack(Character attacker, Character target, String spellName) {
-		if(attacker == null || target == null) {
-			throw new IllegalArgumentException("Los personajes no son validos");
-		}
+	public StateCharacter castSpell(Character caster, Character target, Spell spell) {
 		
-		Spell spell = attacker.getSpell(spellName);
-		
-		if(spell == null) {
-			throw new IllegalArgumentException("El hechizo no es valido");
-		}
-		
-		if(attacker == target) {
-			throw new AutoAttackException("No pueden auto atacarte");
-		}
-		
-		if(spell.getType() == SpellType.SUPPORT) {
-			throw new SpellTypeException("No pueden supportear a los rivales");
-		}
-		
-		if(attacker.getType() == target.getType()) {
-			throw new AllyFireException("No puedes atacar a un aliado");
-		}
-		
-		spell.use(attacker, target);
-		
-		return this;
-	}
-
-	@Override
-	public StateCharacter support(Character support, Character target, String spellName) {
-		if(support == null || target == null) {
-			throw new IllegalArgumentException("Los personajes no son validos");
-		}
-		
-		Spell spell = support.getSpell(spellName);
-		
-		if(spell == null) {
-			throw new IllegalArgumentException("El hechizo no es valido");
-		}
-		
-		if(support == target) {
-			throw new AutoAttackException("No pueden auto atacarte");
-		}
-		
-		if(spell.getType() == SpellType.OFFENSIVE) {
-			throw new SpellTypeException("No pueden atacar a los aliados");
-		}
-		
-		if(support.getType() == target.getType()) {
-			throw new AllyFireException("No puedes ayudar a un enemigo");
-		}
-		
-		spell.use(support, target);
+		spell.use(caster, target);
 		
 		return this;
 	}

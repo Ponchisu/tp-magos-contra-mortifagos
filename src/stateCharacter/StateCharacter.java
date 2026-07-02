@@ -2,11 +2,10 @@ package stateCharacter;
 // Define la interfaz de los estados del personaje.
 
 import character.Character;
+import spell.Spell;
 
 public abstract class StateCharacter {
-	public abstract StateCharacter attack(Character attacker, Character target, String spellName);
-	
-	public abstract StateCharacter support(Character support, Character target, String spellName);
+	public abstract StateCharacter castSpell(Character caster, Character target, Spell spell);
 	
 	public boolean isLive() {
 		return true;

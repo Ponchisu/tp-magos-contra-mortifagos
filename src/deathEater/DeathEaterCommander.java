@@ -3,16 +3,13 @@ package deathEater;
 
 import java.util.Random;
 
-import character.Character;
 import spell.SpellCategory;
 import spellCreator.AvadaKedavraCreator;
 import spellCreator.ConfundoCreator;
 import spellCreator.CrucioCreator;
-import spellCreator.FerulaCreator;
+import spellCreator.ExpelliarmusCreator;
 import spellCreator.FieldfyreCreator;
 import spellCreator.PetrificusTotalusCreator;
-import spellCreator.ProtegoCreator;
-import spellCreator.ProtegoTotalumCreator;
 import spellCreator.SectumsempraCreator;
 import spellCreator.SpellCreator;
 import spellCreator.TempestJinxCreator;
@@ -25,12 +22,9 @@ public class DeathEaterCommander extends DeathEater {
 		int magicLevel;
 		int healthPoints;
 		magicLevel = random.nextInt(29) + 30;
-		healthPoints = 1400 + (360 * magicLevel);
-		super("DeathEaterCommander", magicLevel, healthPoints, 340, 0.97);
+		healthPoints = 140 + (36 * magicLevel);
+		super("DeathEaterCommander", magicLevel, healthPoints, 34, 0.97);
 		
-		
-		spellCreator = new  FerulaCreator();
-		addSpell(spellCreator.createSpell());
 		
 		spellCreator = new TempestJinxCreator();
 		addSpell(spellCreator.createSpell());
@@ -52,14 +46,11 @@ public class DeathEaterCommander extends DeathEater {
 		
 		spellCreator = new ConfundoCreator();
 		addSpell(spellCreator.createSpell());
-		
-		spellCreator = new ProtegoCreator();
-		addSpell(spellCreator.createSpell());
-		
+
 		spellCreator = new AvadaKedavraCreator();
 		addSpell(spellCreator.createSpell());
 		
-		spellCreator = new ProtegoTotalumCreator();
+		spellCreator = new ExpelliarmusCreator();
 		addSpell(spellCreator.createSpell());
 	}
 	
@@ -70,24 +61,15 @@ public class DeathEaterCommander extends DeathEater {
 		} else if(category == SpellCategory.LIGHT) {
 			return 50;
 		} else if(category == SpellCategory.HEAL) {
-			return 15;
+			return 1;
 		} else if(category == SpellCategory.DEFENSE) {
 			return 41;
 		} else if(category == SpellCategory.COUNTERSPELL) {
 			return 40;
+		} else if(category == SpellCategory.AILMENTS) {
+			return 30;
 		} else {
 			throw new IllegalArgumentException("No existe esa categoria de hechizo");
 		}
-	}
-
-	@Override
-	public void darkAttack(Character target, String spellName) {
-		state = state.attack(this, target, spellName);
-		
-	}
-
-	@Override
-	public void specialSpell(Character target, String spellName) {
-		state = state.attack(this, target, spellName);	
 	}
 }

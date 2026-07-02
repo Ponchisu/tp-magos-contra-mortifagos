@@ -3,9 +3,7 @@ package wizard;
 
 import java.util.Random;
 
-import character.Character;
 import spell.SpellCategory;
-import spellCreator.ExpectoPatronumCreator;
 import spellCreator.ExpelliarmusCreator;
 import spellCreator.FerulaCreator;
 import spellCreator.ProtegoCreator;
@@ -19,11 +17,8 @@ public class WizardStudent extends Wizard {
 		int magicLevel;
 		int healthPoints;
 		magicLevel = random.nextInt(10) + 1;
-		healthPoints = 1000 + (150 * magicLevel);
-		super("WizardStudent", magicLevel, healthPoints, 100, 0.7);
-		
-		spellCreator = new ExpectoPatronumCreator();
-		addSpell(spellCreator.createSpell());
+		healthPoints = 100 + (15 * magicLevel);
+		super("WizardStudent", magicLevel, healthPoints, 10, 0.7);
 		
 		spellCreator = new ExpelliarmusCreator();
 		addSpell(spellCreator.createSpell());
@@ -50,13 +45,10 @@ public class WizardStudent extends Wizard {
 			return 25;
 		} else if(category == SpellCategory.COUNTERSPELL) {
 			return 5;
+		} else if(category == SpellCategory.AILMENTS) {
+			return 1;
 		} else {
 			throw new IllegalArgumentException("No existe esa categoria de hechizo");
 		}
-	}
-
-	@Override
-	public void support(Character target, String spellName) {
-		state = state.attack(this, target, spellName);
 	}
 }

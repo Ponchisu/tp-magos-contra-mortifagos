@@ -7,5 +7,6 @@ public enum SpellCategory {
 	LIGHT,
 	HEAL,
 	DEFENSE,
-	COUNTERSPELL
+	COUNTERSPELL,
+	AILMENTS
 }

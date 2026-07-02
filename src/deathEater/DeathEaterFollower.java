@@ -3,11 +3,9 @@ package deathEater;
 
 import java.util.Random;
 
-import character.Character;
 import spell.SpellCategory;
 import spellCreator.ConfundoCreator;
 import spellCreator.CrucioCreator;
-import spellCreator.FerulaCreator;
 import spellCreator.FieldfyreCreator;
 import spellCreator.PetrificusTotalusCreator;
 import spellCreator.SectumsempraCreator;
@@ -22,12 +20,9 @@ public class DeathEaterFollower extends DeathEater {
 		int magicLevel;
 		int healthPoints;
 		magicLevel = random.nextInt(15) + 16;
-		healthPoints = 1200 + (325 * magicLevel);
-		super("DeathEaterFollower", magicLevel, healthPoints, 230, 0.85);
+		healthPoints = 120 + (32 * magicLevel);
+		super("DeathEaterFollower", magicLevel, healthPoints, 23, 0.85);
 		
-		
-		spellCreator = new  FerulaCreator();
-		addSpell(spellCreator.createSpell());
 		
 		spellCreator = new TempestJinxCreator();
 		addSpell(spellCreator.createSpell());
@@ -58,24 +53,15 @@ public class DeathEaterFollower extends DeathEater {
 		} else if(category == SpellCategory.LIGHT) {
 			return 30;
 		} else if(category == SpellCategory.HEAL) {
-			return 15;
+			return 1;
 		} else if(category == SpellCategory.DEFENSE) {
 			return 38;
 		} else if(category == SpellCategory.COUNTERSPELL) {
 			return 10;
+		} else if(category == SpellCategory.AILMENTS) {
+			return 10;
 		} else {
 			throw new IllegalArgumentException("No existe esa categoria de hechizo");
 		}
-	}
-	
-	@Override
-	public void darkAttack(Character target, String spellName) {
-		state = state.attack(this, target, spellName);
-		
-	}
-
-	@Override
-	public void specialSpell(Character target, String spellName) {
-		state = state.attack(this, target, spellName);	
 	}
 }

@@ -3,19 +3,18 @@ package wizard;
 
 import java.util.Random;
 
-import character.Character;
 import spell.SpellCategory;
-import spellCreator.ConfundoCreator;
+import spellCreator.AvadaKedavraCreator;
+import spellCreator.CrucioCreator;
 import spellCreator.ExpelliarmusCreator;
 import spellCreator.FerulaCreator;
 import spellCreator.FieldfyreCreator;
 import spellCreator.FiniteIncantatemCreator;
-import spellCreator.PetrificusTotalusCreator;
+import spellCreator.ProtegoCreator;
 import spellCreator.ProtegoTotalumCreator;
 import spellCreator.SectumsempraCreator;
 import spellCreator.SpellCreator;
 import spellCreator.TempestJinxCreator;
-import spellCreator.TitillandoCreator;
 
 public class WizardAuror extends Wizard {
 	public WizardAuror() {
@@ -24,14 +23,17 @@ public class WizardAuror extends Wizard {
 		int magicLevel;
 		int healthPoints;
 		magicLevel = random.nextInt(29) + 30;
-		healthPoints = 1200 + (300 * magicLevel);
-		super("WizardAuror", magicLevel, healthPoints, 175, 0.95);
+		healthPoints = 120 + (33 * magicLevel);
+		super("WizardAuror", magicLevel, healthPoints, 17, 0.95);
 		
 		
 		spellCreator = new ExpelliarmusCreator();
 		addSpell(spellCreator.createSpell());
 		
 		spellCreator = new  FerulaCreator();
+		addSpell(spellCreator.createSpell());
+		
+		spellCreator = new ProtegoCreator();
 		addSpell(spellCreator.createSpell());
 		
 		spellCreator = new ProtegoTotalumCreator();
@@ -43,19 +45,16 @@ public class WizardAuror extends Wizard {
 		spellCreator = new FieldfyreCreator();
 		addSpell(spellCreator.createSpell());
 		
-		spellCreator = new PetrificusTotalusCreator();
-		addSpell(spellCreator.createSpell());
-		
-		spellCreator = new TitillandoCreator();
-		addSpell(spellCreator.createSpell());
-		
 		spellCreator = new FiniteIncantatemCreator();
 		addSpell(spellCreator.createSpell());
 
 		spellCreator = new SectumsempraCreator();
 		addSpell(spellCreator.createSpell());
 		
-		spellCreator = new ConfundoCreator();
+		spellCreator = new CrucioCreator();
+		addSpell(spellCreator.createSpell());
+		
+		spellCreator = new AvadaKedavraCreator();
 		addSpell(spellCreator.createSpell());
 	}
 	
@@ -71,13 +70,10 @@ public class WizardAuror extends Wizard {
 			return 45;
 		} else if(category == SpellCategory.COUNTERSPELL) {
 			return 50;
+		} else if(category == SpellCategory.AILMENTS) {
+			return 1;
 		} else {
 			throw new IllegalArgumentException("No existe esa categoria de hechizo");
 		}
-	}
-
-	@Override
-	public void support(Character target, String spellName) {
-		state = state.attack(this, target, spellName);
 	}
 }

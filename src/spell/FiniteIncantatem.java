@@ -15,7 +15,7 @@ public class FiniteIncantatem extends Spell {
 		System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 		
 		
-		if(caster.getAffinity(getCategory()) < 10) {
+		if(caster.getAffinity(getCategory()) < 30) {
 			if(Math.random() < 0.5) {
 				target.cleanState();
 			}

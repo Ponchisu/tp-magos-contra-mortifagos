@@ -11,9 +11,15 @@ class WizardStudentTest {
 
 	@Test
 	void test() {
-		Character wizard = ToRecruit.GetInstance().createWizard();
+		Character w = ToRecruit.GetInstance().createWizard();
+		Character d = ToRecruit.GetInstance().createDeathEater();
 		
-		System.out.println(wizard.getName());
+		d.attack(w, "Sectumsempra");
+		w.attack(d, "Sectumsempra");
+		
+		System.out.println(w.getName() + " lvl:" + w.getMagicLevel());
+		System.out.println(d.getName() + " lvl:" + d.getMagicLevel());
+
 	}
 
 }

@@ -7,7 +7,7 @@ public class ExpectoPatronum extends Spell {
 	private int stunDuration;
 	
 	public ExpectoPatronum() {
-		super("ExpectoPatronum", SpellType.SUPPORT, SpellCategory.LIGHT, 0.95);
+		super("ExpectoPatronum", SpellType.SPECIAL, SpellCategory.AILMENTS, 0.95);
 		stunDuration = 1;
 	}
 

@@ -2,11 +2,7 @@ package stateCharacter;
 // Representa el estado de un personaje quemado por daño de fuego.
 
 import character.Character;
-import exceptions.AllyFireException;
-import exceptions.AutoAttackException;
-import exceptions.SpellTypeException;
 import spell.Spell;
-import spell.SpellType;
 
 public class Burned extends StateCharacter {
 	private int fireDamage;
@@ -18,88 +14,22 @@ public class Burned extends StateCharacter {
 	}
 
 	@Override
-	public StateCharacter attack(Character attacker, Character target, String spellName) {
-		if(attacker == null || target == null) {
-			throw new IllegalArgumentException("Los personajes no son validos");
-		}
-		
-		Spell spell = attacker.getSpell(spellName);
-		
-		if(spell == null) {
-			throw new IllegalArgumentException("El hechizo no es valido");
-		}
-		
-		if(attacker == target) {
-			throw new AutoAttackException("No pueden auto atacarte");
-		}
-		
-		if(spell.getType() == SpellType.SUPPORT) {
-			throw new SpellTypeException("No pueden supportear a los rivales");
-		}
-		
-		if(attacker.getType() == target.getType()) {
-			throw new AllyFireException("No puedes atacar a un aliado");
-		}
-		
-		spell.use(attacker, target);
+	public StateCharacter castSpell(Character caster, Character target, Spell spell) {
+		spell.use(caster, target);
 		
 		duration --;
-		System.out.println(attacker.getName() + " recibio " + fireDamage + " de daño fuego");
-		attacker.healthDown(fireDamage);
+		System.out.println(caster.getName() + " recibio de daño fuego");
+		caster.healthDown(fireDamage);
 		
-		if(attacker.getHealthPoints() == 0) {
-			System.out.println(attacker.getName() + " ha muerto");
+		if(caster.getHealthPoints() == 0) {
+			System.out.println(caster.getName() + " ha muerto");
 			return new Death();
 		} else {
 			if(duration > 0) {
-				System.out.println(attacker.getName() + " seguira incendiado por " + duration + " turnos");
+				System.out.println(caster.getName() + " seguira incendiado por " + duration + " turnos");
 				return this;
 			} else {
-				System.out.println(attacker.getName() + " dejo de estar incendiado");
-				return new Idle();
-			}
-		}
-	}
-
-	@Override
-	public StateCharacter support(Character support, Character target, String spellName) {
-		if(support == null || target == null) {
-			throw new IllegalArgumentException("Los personajes no son validos");
-		}
-		
-		Spell spell = support.getSpell(spellName);
-		
-		if(spell == null) {
-			throw new IllegalArgumentException("El hechizo no es valido");
-		}
-		
-		if(support == target) {
-			throw new AutoAttackException("No pueden auto atacarte");
-		}
-		
-		if(spell.getType() == SpellType.OFFENSIVE) {
-			throw new SpellTypeException("No pueden atacar a los aliados");
-		}
-		
-		if(support.getType() == target.getType()) {
-			throw new AllyFireException("No puedes ayudar a un enemigo");
-		}		
-		
-		spell.use(support, target);
-		
-		duration --;
-		System.out.println(support.getName() + " recibio " + fireDamage + " de daño fuego");
-		support.healthDown(fireDamage);
-		
-		if(support.getHealthPoints() == 0) {
-			System.out.println(support.getName() + " ha muerto");
-			return new Death();
-		} else {
-			if(duration > 0) {
-				System.out.println(support.getName() + " seguira incendiado por " + duration + " turnos");
-				return this;
-			} else {
-				System.out.println(support.getName() + " dejo de estar incendiado");
+				System.out.println(caster.getName() + " dejo de estar incendiado");
 				return new Idle();
 			}
 		}
@@ -136,7 +66,7 @@ public class Burned extends StateCharacter {
 	
 	@Override
 	public StateCharacter wounded(Character character, int bleendingDamage, int duration) {
-		System.out.println(character.getName() + " recibio 100 de daño de tecnico");
+		System.out.println(character.getName() + " recibio daño tecnico");
 		
 		character.healthDown(100);
 		
@@ -151,7 +81,7 @@ public class Burned extends StateCharacter {
 	
 	@Override
 	public StateCharacter electrocute(Character character, int electricDamage, int duration) {
-		System.out.println(character.getName() + " recibio 400 de daño de tecnico");
+		System.out.println(character.getName() + " recibio daño tecnico");
 		
 		character.healthDown(400);
 		

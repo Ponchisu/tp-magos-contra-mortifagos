@@ -7,7 +7,7 @@ public class PetrificusTotalus extends Spell {
 	private int stunDuration;
 	
 	public PetrificusTotalus() {
-		super("Pertificus Totalus", SpellType.SUPPORT, SpellCategory.LIGHT, 0.95);
+		super("Pertificus Totalus", SpellType.SPECIAL, SpellCategory.AILMENTS, 0.95);
 		stunDuration = 1;
 	}
 

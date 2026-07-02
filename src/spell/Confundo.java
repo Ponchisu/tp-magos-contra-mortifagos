@@ -6,7 +6,7 @@ import character.Character;
 public class Confundo extends Spell {
 
 	public Confundo() {
-		super("Confundo", SpellType.OFFENSIVE, SpellCategory.LIGHT, 0.65);
+		super("Confundo", SpellType.SPECIAL, SpellCategory.AILMENTS, 0.65);
 	}
 
 	@Override
@@ -14,7 +14,7 @@ public class Confundo extends Spell {
 		if(Math.random() < this.getAccuracy()) {
 			System.out.println(caster.getName() + " le lanzó " + this.getName() + " a " + target.getName());
 			
-			if (caster.getAffinity(getCategory()) <= 30) {
+			if (caster.getAffinity(getCategory()) < 30) {
 				target.confuse(1);
 			} else {
 				target.confuse(3);

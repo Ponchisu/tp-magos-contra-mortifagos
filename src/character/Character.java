@@ -10,8 +10,11 @@ import spell.SpellCategory;
 import stateCharacter.Idle;
 import stateCharacter.StateCharacter;
 import exceptions.AllyFireException;
+import exceptions.AllyNerfException;
 import exceptions.AutoAttackException;
 import exceptions.HelpEnemyException;
+import exceptions.InvalidSpellTypeException;
+import exceptions.SpellNotFoundException;
 import exceptions.SpellTypeException;
 
 public abstract class Character {
@@ -47,7 +50,10 @@ public abstract class Character {
 	}
 	
 	public void attack(Character target, String spellName) {
-		state = state.attack(this, target, spellName);
+		Spell spell = validCastSpell(target, spellName, SpellType.OFFENSIVE);
+		System.out.println("###########################################################################\n");		
+		state = state.castSpell(this, target, spell);
+		System.out.println("");
 	}
 	
 	public void increaseDefense(int defense, int duration) {
@@ -106,8 +112,13 @@ public abstract class Character {
 		} else {
 			defenseNerf = 0;
 		}
+		int defense = (int)(getDefense() * 0.25);
 		
-		damage = damage - (int)(getDefense() * 0.25);
+		if(damage < defense) {
+			damage = 0;
+		} else {
+			damage -= defense;
+		}
 		
 		if(healthPoints < damage) {
 			healthPoints = 0;
@@ -128,7 +139,7 @@ public abstract class Character {
 				return spell;
 			}
 		}
-		return null;
+		throw new SpellNotFoundException("El personaje no posee ese hechizo o no existe");
 	}
 	
 	public boolean isLive() {
@@ -202,8 +213,7 @@ public abstract class Character {
 		state = state.confuse(this, duration);
 	}
 
-	// Metodo que permite a los personajes lanzar un hechizo
-	public void castSpell(Character target, String spellName) {
+	public Spell validCastSpell(Character target, String spellName, SpellType type) {
 		if(spellName == null) {
 			throw new IllegalArgumentException("El hechizo no puede ser nulo");
 		}
@@ -213,23 +223,26 @@ public abstract class Character {
 		if(target == null) {
 			throw new IllegalArgumentException("El objetivo no puede ser nulo");
 		}
-		//Valido que el hechizo pertenezca al personaje
+		if(spell.getType() != type) {
+			throw new InvalidSpellTypeException("El hechizo no es de tipo " + type);
+		}
 		if(!spells.contains(spell)) {
 			throw new SpellTypeException(name + " no posee ese hechizo");
 		}
-		//Valido que el objetivo sea valido para el tipo de hechizo
 		if(spell.getType() == SpellType.OFFENSIVE && target == this) {
 			throw new AutoAttackException("No se puede lanzar un hechizo ofensivo sobre uno mismo");
 		}
 		if(spell.getType() == SpellType.OFFENSIVE && target.type == this.type) {
 			throw new AllyFireException("No se puede lanzar un hechizo ofensivo sobre un miembro del equipo");
 		}
-		
+		if(spell.getType() == SpellType.SPECIAL && target.type == this.type) {
+			throw new AllyNerfException("No se puede lanzar una habilidad especial sobre un miembro del equipo");
+		}
 		if(spell.getType() == SpellType.SUPPORT && target.type != this.type) {
 			throw new HelpEnemyException("No se puede lanzar un hechizo de soporte sobre un enemigo");
 		}
 		
-		spell.use(this, target);
+		return spell;
 	}
 	
 	@Override

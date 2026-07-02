@@ -7,7 +7,7 @@ public class Titillando extends Spell {
 	private int defense;
 	
 	public Titillando() {
-		super("Protego", SpellType.OFFENSIVE, SpellCategory.DEFENSE, 1);
+		super("Protego", SpellType.SPECIAL, SpellCategory.DEFENSE, 1);
 		this.defense = 40;
 	}
 	
