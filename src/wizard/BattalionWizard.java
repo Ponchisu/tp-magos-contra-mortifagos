@@ -1,18 +1,26 @@
 package wizard;
 // Agrupa a varios magos en una unidad de combate.
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import character.Character;
 import spell.Spell;
 import spell.SpellCategory;
+import spell.SpellType;
 
 public class BattalionWizard extends Wizard {
-	private Set<Wizard> wizards;
+	private List<Wizard> wizards;
 	
+	// Historial de hechizos lanzados por cada personaje
+	private Map<Wizard, List<Spell>> spellHistory;
+
 	public BattalionWizard() {
 		super("BattalionWizard", 0, 0, 0, 0);
-		wizards = new HashSet<Wizard>();
+		wizards = new ArrayList<Wizard>();
 	}
 	
 	public boolean addWizard(Wizard wizard) {
@@ -20,17 +28,88 @@ public class BattalionWizard extends Wizard {
 	}
 	
 	@Override
-	public void attack(Character target, String nameSpell) {
-		for (Wizard w : wizards) {
-			w.attack(target, nameSpell);			
+	public void attack(Character target) {
+
+	    Set<Spell> usedSpells = new HashSet<>();
+	    Random random = new Random();
+
+		//Recorre los personajes
+	    for (Wizard wizard : wizards) {
+			//Selecciona un objetivo aleatorio del batallon enemigo
+	        Character objective =
+	                target.get(random.nextInt(target.getBattalionSize()));
+
+			//Seleccion un hechizo aleatorio disponible
+	        Spell spell = getRandomSpell(
+	                wizard,
+	                SpellType.OFFENSIVE,
+	                usedSpells);
+
+	        if (spell == null) {
+	            continue;
+	        }
+
+			//Agrega el hechizo a los historiales
+	        usedSpells.add(spell);
+
+	        if (!spellHistory.containsKey(wizard)) {
+			    spellHistory.put(wizard, new ArrayList<>());
+			}
+
+			spellHistory.get(wizard).add(spell);
+			//Se realiza la accion
+			wizard.attack(objective, spell.getName());
 		}
 	}
 	
 	@Override
-	public void support(Character targert, String nameSpell) {
-		for (Wizard w : wizards) {
-			w.support(targert, nameSpell);			
+	public void support(Character target) {
+		
+	    Set<Spell> usedSpells = new HashSet<>();
+	    Random random = new Random();
+		//Recorre los personajes
+	    for (Wizard wizard : wizards) {
+			//Selecciona un objetivo aleatorio del batallon enemigo
+	        Character objective =
+	                target.get(random.nextInt(target.getBattalionSize()));
+			//Seleccion un hechizo aleatorio disponible
+	        Spell spell = getRandomSpell(
+	                wizard,
+	                SpellType.SUPPORT,
+	                usedSpells);
+
+	        if (spell == null) {
+	            continue;
+	        }
+			//Agrega el hechizo a los historiales
+	        usedSpells.add(spell);
+
+	        if (!spellHistory.containsKey(wizard)) {
+			    spellHistory.put(wizard, new ArrayList<>());
+			}
+			
+			spellHistory.get(wizard).add(spell);
+			//Se realiza la accion
+			wizard.attack(objective, spell.getName());
 		}
+	}
+
+	private Spell getRandomSpell(Wizard wizard, SpellType type, Set<Spell> usedSpells) {
+
+	    List<Spell> availableSpells = new ArrayList<>();
+
+	    for (Spell spell : wizard.getSpells()) {
+	        if (spell.getType() == type && !usedSpells.contains(spell)) {
+	            availableSpells.add(spell);
+	        }
+	    }
+
+	    if (availableSpells.isEmpty()) {
+	        return null;
+	    }
+
+	    Random random = new Random();
+	    return availableSpells.get(random.nextInt(availableSpells.size()));
 	}
 
 	@Override
@@ -226,4 +305,15 @@ public class BattalionWizard extends Wizard {
 			wizard.confuse(duration);
 		}
 	}
+
+	@Override
+	public int getBattalionSize() {
+		return wizards.size();
+	}
+
+	@Override
+	public Character get(int index) {
+	    return wizards.get(index);
+	}
+
 }

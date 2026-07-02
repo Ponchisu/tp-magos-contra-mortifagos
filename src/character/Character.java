@@ -261,4 +261,11 @@ public abstract class Character {
 		Character other = (Character) obj;
 		return magicLevel == other.magicLevel && Objects.equals(name, other.name);
 	}
+
+	public abstract int getBattalionSize();
+
+	public Character get(int index) {
+	    throw new UnsupportedOperationException();
+	}
+
 }

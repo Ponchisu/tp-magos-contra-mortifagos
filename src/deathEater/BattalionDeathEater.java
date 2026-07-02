@@ -4,13 +4,19 @@ package deathEater;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import character.Character;
 import spell.Spell;
 import spell.SpellCategory;
+import spell.SpellType;
 
 public class BattalionDeathEater extends DeathEater {
 	private List<DeathEater> deathEaters;
+
+	// Historial de hechizos lanzados por cada personaje
+	private Map<DeathEater, List<Spell>> spellHistory;
 	
 	public BattalionDeathEater() {
 		super("BattalionDeathEater", 0, 0, 0, 0);
@@ -18,17 +24,90 @@ public class BattalionDeathEater extends DeathEater {
 	}
 
 	@Override
-	public void attack(Character target, String spellName) {
-		for(DeathEater deathEater : deathEaters) {
-			deathEater.attack(target, spellName);
-		}
+	public void attack(Character target) {
+
+	    Set<Spell> usedSpells = new HashSet<>();
+	    Random random = new Random();
+
+		//Recorre los personajes
+	    for (DeathEater deathEater : deathEaters) {
+			//Selecciona un objetivo aleatorio del batallon enemigo
+	        Character objective =
+	                target.get(random.nextInt(target.getBattalionSize()));
+
+			//Seleccion un hechizo aleatorio disponible
+	        Spell spell = getRandomSpell(
+	                deathEater,
+	                SpellType.OFFENSIVE,
+	                usedSpells);
+
+	        if (spell == null) {
+	            continue;
+	        }
+
+			//Agrega el hechizo a los historiales
+	        usedSpells.add(spell);
+
+	        if (!spellHistory.containsKey(deathEater)) {
+			    spellHistory.put(deathEater, new ArrayList<>());
+			}
+
+			spellHistory.get(deathEater).add(spell);
+			//Se realiza la accion
+			deathEater.attack(objective, spell.getName());
+		}		
 	}
 
 	@Override
-	public void specialSpell(Character target, String spellName)  {
-		for(DeathEater deathEater : deathEaters) {
-			deathEater.specialSpell(target, spellName);
+	public void specialSpell(Character target)  {
+		Set<Spell> usedSpells = new HashSet<>();
+	    Random random = new Random();
+
+		//Recorre los personajes
+	    for (DeathEater deathEater : deathEaters) {
+			//Selecciona un objetivo aleatorio del batallon enemigo
+	        Character objective =
+	                target.get(random.nextInt(target.getBattalionSize()));
+
+			//Seleccion un hechizo aleatorio disponible
+	        Spell spell = getRandomSpell(
+	                deathEater,
+	                SpellType.SPECIALSPELL,
+	                usedSpells);
+
+	        if (spell == null) {
+	            continue;
+	        }
+
+			//Agrega el hechizo a los historiales
+	        usedSpells.add(spell);
+
+	        if (!spellHistory.containsKey(deathEater)) {
+			    spellHistory.put(deathEater, new ArrayList<>());
+			}
+
+			spellHistory.get(deathEater).add(spell);
+			//Se realiza la accion
+			deathEater.attack(objective, spell.getName());
 		}
+	}
+
+	private Spell getRandomSpell(DeathEater deathEater, SpellType type, Set<Spell> usedSpells) {
+
+	    List<Spell> availableSpells = new ArrayList<>();
+
+	    for (Spell spell : deathEater.getSpells()) {
+	        if (spell.getType() == type && !usedSpells.contains(spell)) {
+	            availableSpells.add(spell);
+	        }
+	    }
+
+	    if (availableSpells.isEmpty()) {
+	        return null;
+	    }
+
+	    Random random = new Random();
+	    return availableSpells.get(random.nextInt(availableSpells.size()));
 	}
 	
 	@Override
@@ -224,4 +303,15 @@ public class BattalionDeathEater extends DeathEater {
 			deathEater.confuse(duration);
 		}
 	}
+
+	@Override
+	public int getBattalionSize() {
+		return deathEaters.size();
+	}
+
+	@Override
+	public Character get(int index) {
+	    return deathEaters.get(index);
+	}
+
 }
