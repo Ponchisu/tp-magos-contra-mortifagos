@@ -24,7 +24,7 @@ public class BatallaMagosVsMortifagos {
 
         // Ejecutar algunas rondas demostrativas.
         int round = 0;
-        while (batallonMagos.isLive() && batallonMortifagos.isLive() && round < 8) {
+        while (batallonMagos.isLive() && batallonMortifagos.isLive()) {
             System.out.println("--- Ronda " + (++round) + " ---");
             if (startRandom.nextBoolean()) {
                 System.out.println("Turno de los magos");
@@ -70,9 +70,9 @@ public class BatallaMagosVsMortifagos {
             System.out.println();
         }
 
-        if (batallonMagos.isLive()) {
+        if (batallonMagos.isLive() && !batallonMortifagos.isLive()) {
             System.out.println("¡Los magos han ganado la batalla!");
-        } else if (batallonMortifagos.isLive()) {
+        } else if (!batallonMagos.isLive() && batallonMortifagos.isLive()) {
             System.out.println("¡Los mortífagos han ganado la batalla!");
         } else {
             System.out.println("La batalla terminó en empate técnico.");

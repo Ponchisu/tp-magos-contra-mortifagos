@@ -18,15 +18,19 @@ public abstract class DeathEater extends Character {
 	public void specialSpell(Character target) {
 		List<Spell> spells = new ArrayList<Spell>(this.getSpells());
 		Random random = new Random();
-		System.out.println("###########################################################################\n");		
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque especial\n\n");		
 		state = state.castSpell(this, target, spells.get(random.nextInt(spells.size())));
-		System.out.println("");
+		System.out.println("\n" + this.getName() + " Fin de atque especial");	
+		System.out.println("###########################################################################\n");
 	}
 	
 	public void specialSpell(Character target, String spellName) {
 		Spell spell = validCastSpell(target, spellName, SpellType.SPECIAL);
-		System.out.println("###########################################################################\n");		
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque especial\n\n");			
 		state = state.castSpell(this, target, spell);
-		System.out.println("");
+		System.out.println("\n" + this.getName() + " Fin de atque especial");	
+		System.out.println("###########################################################################\n");
 	}
 }

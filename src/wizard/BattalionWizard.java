@@ -31,9 +31,8 @@ public class BattalionWizard extends Wizard {
 	
 	@Override
 	public void attack(Character target) {
-		System.out.println("###########################################################################\n");
-		System.out.println(this.getName() + "\n");
-		System.out.println("###########################################################################\n");
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque\n\n");
 		
 		if(target.getType() == CharacterType.WIZARD) {
 			throw new AllyFireException("No se puede atacar a un aliado");
@@ -45,7 +44,6 @@ public class BattalionWizard extends Wizard {
 
 		//Recorre los personajes
 	    for (Wizard wizard : wizards) {
-			System.out.println("-----------------------------------------------------------\n");
 	    	Character objective = target.pickTarget(random);
 
 			//Seleccion un hechizo aleatorio disponible
@@ -65,34 +63,31 @@ public class BattalionWizard extends Wizard {
 			spellHistory.get(wizard).add(spell);
 			//Se realiza la accion
 			wizard.attack(objective, spell.getName());
-			System.out.println("---------------------------------------------------------------------------\n");
 		}
+		System.out.println("\n" + this.getName() + " Fin de atque");	
 		System.out.println("###########################################################################\n");
 	}
 	
 	@Override
 	public void attack(Character target, String spellName) {
-		System.out.println("###########################################################################\n");
-		System.out.println(this.getName() + "\n");
+		System.out.println("\n" + this.getName() + " Inicio de atque");	
 		System.out.println("###########################################################################\n");
 		
 		for(Wizard wizard : wizards) {
-			System.out.println("---------------------------------------------------------------------------\n");
 			try {
 				wizard.attack(target, spellName);				
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-			System.out.println("---------------------------------------------------------------------------\n");
 		}
+		System.out.println("\n" + this.getName() + " Fin de atque");	
 		System.out.println("###########################################################################\n");
 	}
 	
 	@Override
 	public void support(Character target) {
-		System.out.println("###########################################################################\n");
-		System.out.println(this.getName() + "\n");
-		System.out.println("###########################################################################\n");
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de supporteo\n\n");	
 		
 		if(target.getType() == CharacterType.DEATHEATER) {
 			throw new AllyFireException("No se puede ayudar a un enemigo");
@@ -102,7 +97,6 @@ public class BattalionWizard extends Wizard {
 	    Random random = new Random();
 		//Recorre los personajes
 	    for (Wizard wizard : wizards) {
-			System.out.println("---------------------------------------------------------------------------\n");
 	    	Character objective = target.pickTarget(random);
 
 			//Seleccion un hechizo aleatorio disponible
@@ -121,27 +115,25 @@ public class BattalionWizard extends Wizard {
 			spellHistory.get(wizard).add(spell);
 			//Se realiza la accion
 			wizard.support(objective, spell.getName());
-			System.out.println("---------------------------------------------------------------------------\n");
 		}
-		System.out.println("###########################################################################\n");
+		System.out.println("\n" + this.getName() + " Fin de supporteo");	
+		System.out.println("###########################################################################\n");	
 	}
 	
 	@Override
 	public void support(Character target, String spellName) {
-		System.out.println("###########################################################################\n");
-		System.out.println(this.getName() + "\n");
-		System.out.println("###########################################################################\n");
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de supporteo\n\n");	
 		
 		for(Wizard wizard : wizards) {
-			System.out.println("---------------------------------------------------------------------------\n");
 			try {
 				wizard.support(target, spellName);				
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-			System.out.println("---------------------------------------------------------------------------\n");
 		}
-		System.out.println("###########################################################################\n");
+		System.out.println("\n" + this.getName() + " Fin de supporteo");	
+		System.out.println("###########################################################################\n");	
 	}
 
 	private Spell getRandomSpell(Wizard wizard, SpellType type, Set<Spell> usedSpells) {
@@ -370,7 +362,11 @@ public class BattalionWizard extends Wizard {
 	
 	@Override
 	public Character pickTarget(Random random) {
-	    return get(random.nextInt(getBattalionSize()));
+		Character character = null;
+		do {
+			character = get(random.nextInt(getBattalionSize()));
+		} while (!character.isLive());
+	    return character;
 	}
 
 	@Override

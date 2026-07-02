@@ -29,9 +29,8 @@ public class BattalionDeathEater extends DeathEater {
 
 	@Override
 	public void attack(Character target) {
-		System.out.println("###########################################################################\n");
-		System.out.println(this.getName() + "\n");
-		System.out.println("###########################################################################\n");
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque\n\n");
 
 		if(target.getType() == CharacterType.DEATHEATER) {
 			throw new AllyFireException("No se puede atacar a un aliado");
@@ -42,7 +41,6 @@ public class BattalionDeathEater extends DeathEater {
 
 		//Recorre los personajes
 	    for(DeathEater deathEater : deathEaters) {
-			System.out.println("---------------------------------------------------------------------------\n");
 	    	Character objective = target.pickTarget(random);
 
 			//Seleccion un hechizo aleatorio disponible
@@ -62,34 +60,31 @@ public class BattalionDeathEater extends DeathEater {
 			spellHistory.get(deathEater).add(spell);
 			//Se realiza la accion
 			deathEater.attack(objective, spell.getName());
-			System.out.println("---------------------------------------------------------------------------\n");
 		}
+		System.out.println("\n" + this.getName() + " Fin de atque");	
 		System.out.println("###########################################################################\n");
 	}
 	
 	@Override
 	public void attack(Character target, String spellName) {
-		System.out.println("###########################################################################\n");
-		System.out.println(this.getName() + "\n");
-		System.out.println("###########################################################################\n");
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque\n\n");	
 
 		for(DeathEater deathEater : deathEaters) {
-			System.out.println("---------------------------------------------------------------------------\n");
 			try {
 				deathEater.attack(target, spellName);				
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-			System.out.println("---------------------------------------------------------------------------\n");
 		}
-		System.out.println("###########################################################################\n");
+		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("###########################################################################\n");	
 	}
 
 	@Override
 	public void specialSpell(Character target)  {
-		System.out.println("###########################################################################\n");
-		System.out.println(this.getName() + "\n");
-		System.out.println("###########################################################################\n");
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque especial\n\n");	
 		
 		if(target.getType() == CharacterType.DEATHEATER) {
 			throw new AllyFireException("No se puede atacar a un aliado");
@@ -100,7 +95,6 @@ public class BattalionDeathEater extends DeathEater {
 
 		//Recorre los personajes
 	    for(DeathEater deathEater : deathEaters) {
-			System.out.println("---------------------------------------------------------------------------\n");
 	    	Character objective = target.pickTarget(random);
 
 			//Seleccion un hechizo aleatorio disponible
@@ -119,27 +113,27 @@ public class BattalionDeathEater extends DeathEater {
 
 			spellHistory.get(deathEater).add(spell);
 			//Se realiza la accion
-			deathEater.attack(objective, spell.getName());
-			System.out.println("---------------------------------------------------------------------------\n");
+			deathEater.specialSpell(objective, spell.getName());
 		}
-		System.out.println("###########################################################################\n");
+		System.out.println("\n" + this.getName() + " Fin de atque especial");	
+		System.out.println("###########################################################################\n");	
 	}
 	
 	@Override
 	public void specialSpell(Character target, String spellName) {
-		System.out.println("###########################################################################\n");
-		System.out.println(this.getName() + "\n");
-		System.out.println("###########################################################################\n");
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque especial\n\n");	
 		
 		for(DeathEater deathEater : deathEaters) {
 			try {
-				deathEater.attack(target, spellName);				
+				deathEater.specialSpell(target, spellName);				
 			} catch (Exception e) {
 				System.out.println(e);
 			}
 		}
+		System.out.println("\n" + this.getName() + " Fin de atque especial");	
 		System.out.println("###########################################################################\n");
-	}
+		}
 
 	private Spell getRandomSpell(DeathEater deathEater, SpellType type, Set<Spell> usedSpells) {
 
@@ -370,7 +364,11 @@ public class BattalionDeathEater extends DeathEater {
 
 	@Override
 	public Character pickTarget(Random random) {
-	    return get(random.nextInt(getBattalionSize()));
+		Character character = null;
+		do {
+			character = get(random.nextInt(getBattalionSize()));
+		} while (!character.isLive());
+	    return character;
 	}
 
 	@Override

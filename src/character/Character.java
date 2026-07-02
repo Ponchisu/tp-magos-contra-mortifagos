@@ -16,7 +16,7 @@ import exceptions.AllyFireException;
 import exceptions.AllyNerfException;
 import exceptions.AutoAttackException;
 import exceptions.HelpEnemyException;
-//import exceptions.InvalidSpellTypeException;
+import exceptions.InvalidSpellTypeException;
 import exceptions.SpellNotFoundException;
 import exceptions.SpellTypeException;
 
@@ -55,16 +55,21 @@ public abstract class Character {
 	public void attack(Character target) {
 		List<Spell> spells = new ArrayList<Spell>(this.spells);
 		Random random = new Random();
-		System.out.println("###########################################################################\n");		
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque\n\n");	
 		state = state.castSpell(this, target, spells.get(random.nextInt(spells.size())));
-		System.out.println("");
+		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("###########################################################################\n");
 	}
 	
 	public void attack(Character target, String spellName) {
 		Spell spell = validCastSpell(target, spellName, SpellType.OFFENSIVE);
-		System.out.println("###########################################################################\n");		
+		System.out.println("###########################################################################");
+		System.out.println(this.getName() + " Inicio de ataque\n\n");		
 		state = state.castSpell(this, target, spell);
 		System.out.println("");
+		System.out.println("\n" + this.getName() + " Fin de atque");	
+		System.out.println("###########################################################################\n");	
 	}
 	
 	public void increaseDefense(int defense, int duration) {
@@ -235,8 +240,8 @@ public abstract class Character {
 			throw new IllegalArgumentException("El objetivo no puede ser nulo");
 		}
 		if(spell.getType() != type) {
-			//throw new InvalidSpellTypeException("El hechizo no es de tipo " + type);
-			throw new IllegalArgumentException("El hechizo no es de tipo " + type);
+			throw new InvalidSpellTypeException("El hechizo no es de tipo " + type);
+			//throw new IllegalArgumentException("El hechizo no es de tipo " + type);
 		}
 		if(!spells.contains(spell)) {
 			throw new SpellTypeException(name + " no posee el hechizo " + spellName);
