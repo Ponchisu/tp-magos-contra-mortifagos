@@ -4,7 +4,6 @@ package wizard;
 import java.util.Random;
 
 import character.Character;
-import character.CharacterType;
 import spell.SpellCategory;
 import spellCreator.ConfundoCreator;
 import spellCreator.ExpelliarmusCreator;
@@ -18,7 +17,7 @@ import spellCreator.SpellCreator;
 import spellCreator.TempestJinxCreator;
 import spellCreator.TitillandoCreator;
 
-public class WizardAuror extends Character implements Wizard {
+public class WizardAuror extends Wizard {
 	public WizardAuror() {
 		Random random = new Random();
 		SpellCreator spellCreator;
@@ -26,7 +25,7 @@ public class WizardAuror extends Character implements Wizard {
 		int healthPoints;
 		magicLevel = random.nextInt(29) + 30;
 		healthPoints = 1200 + (300 * magicLevel);
-		super("WizardAuror", magicLevel, healthPoints, 175, 0.95, CharacterType.WIZARD);
+		super("WizardAuror", magicLevel, healthPoints, 175, 0.95);
 		
 		
 		spellCreator = new ExpelliarmusCreator();
@@ -75,11 +74,6 @@ public class WizardAuror extends Character implements Wizard {
 		} else {
 			throw new IllegalArgumentException("No existe esa categoria de hechizo");
 		}
-	}
-
-	@Override
-	public void attack(Character target, String spellName) {
-		state = state.attack(this, target, spellName);
 	}
 
 	@Override

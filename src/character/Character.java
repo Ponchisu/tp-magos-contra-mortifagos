@@ -1,8 +1,9 @@
 package character;
 // Representa a un personaje del juego con atributos, estados y hechizos.
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import spell.Spell;
 import spell.SpellType;
 import spell.SpellCategory;
@@ -14,6 +15,7 @@ import exceptions.HelpEnemyException;
 import exceptions.SpellTypeException;
 
 public abstract class Character {
+	private static int number = 1;
 	private String name;
 	private int magicLevel;
 	private int healthPoints;
@@ -25,10 +27,10 @@ public abstract class Character {
 	private int defenseNerfDuration;
 	protected StateCharacter state;
 	private CharacterType type;
-	private List<Spell> spells;
+	private Set<Spell> spells;
 	
 	public Character(String name, int magicLevel, int healthPoints, int defense, double accuracy, CharacterType type) {
-		this.name = name;
+		this.name = name + String.format("%03d", number);
 		this.magicLevel = magicLevel;
 		this.healthPoints = healthPoints;
 		this.defense = defense;
@@ -39,7 +41,13 @@ public abstract class Character {
 		defenseNerf = 0;
 		defenseNerfDuration = 0;
 		state = new Idle();
-		spells = new ArrayList<Spell>();
+		spells = new HashSet<Spell>();
+		
+		number ++;
+	}
+	
+	public void attack(Character target, String spellName) {
+		state = state.attack(this, target, spellName);
 	}
 	
 	public void increaseDefense(int defense, int duration) {
@@ -152,13 +160,9 @@ public abstract class Character {
 	public CharacterType getType() {
 		return type;
 	}
-	
-	public int getDefenseBuffDuration() {
-		return defenseBuffDuration;
-	}
 
-	public List<Spell> getSpells() {
-		return new ArrayList<>(spells); // Devuelve una copia y no la referencia a la lista
+	public Set<Spell> getSpells() {
+		return new HashSet<Spell>(spells); // Devuelve una copia y no la referencia a la lista
 	}
 	
 	public void receiveDamage(int damage) {
@@ -199,16 +203,19 @@ public abstract class Character {
 	}
 
 	// Metodo que permite a los personajes lanzar un hechizo
-	public void castSpell(Character target, Spell spell) {
-		if(spell == null) {
+	public void castSpell(Character target, String spellName) {
+		if(spellName == null) {
 			throw new IllegalArgumentException("El hechizo no puede ser nulo");
 		}
+		
+		Spell spell = this.getSpell(spellName);
+		
 		if(target == null) {
 			throw new IllegalArgumentException("El objetivo no puede ser nulo");
 		}
 		//Valido que el hechizo pertenezca al personaje
 		if(!spells.contains(spell)) {
-			throw new SpellTypeException("El hechizo no pertenece al personaje");
+			throw new SpellTypeException(name + " no posee ese hechizo");
 		}
 		//Valido que el objetivo sea valido para el tipo de hechizo
 		if(spell.getType() == SpellType.OFFENSIVE && target == this) {
@@ -224,36 +231,21 @@ public abstract class Character {
 		
 		spell.use(this, target);
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(magicLevel, name);
+	}
 
-		public boolean castSpell(Character target, Spell spell) { //Retorna true si el hechizo se lanza correctamente, false si no se puede lanzar
-		try{
-
-			if(spell == null) {
-				throw new IllegalArgumentException("El hechizo no puede ser nulo");
-			}
-
-			if(target == null) {
-				throw new IllegalArgumentException("El objetivo no puede ser nulo");
-			}
-
-			//Valido que el hechizo pertenezca al personaje
-			if(!spells.contains(spell)) {
-				throw new IllegalArgumentException("El hechizo no pertenece al personaje");
-			}
-
-			//Valido que el objetivo sea valido para el tipo de hechizo
-			if(spell.getType() == Spell.SpellType.OFFENSIVE && target == this) {
-				throw new IllegalArgumentException("No se puede lanzar un hechizo ofensivo sobre uno mismo");
-			}
-			
-			
-
-			spell.use(this, target);
-
-		} catch (IllegalArgumentException e) {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-
-		return true;
+		if (getClass() != obj.getClass())
+			return false;
+		Character other = (Character) obj;
+		return magicLevel == other.magicLevel && Objects.equals(name, other.name);
 	}
 }

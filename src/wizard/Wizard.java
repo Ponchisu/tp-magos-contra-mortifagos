@@ -2,9 +2,14 @@ package wizard;
 // Representa a un mago con sus habilidades y atributos.
 
 import character.Character;
-import spell.Spell;
+import character.CharacterType;
 
-public interface Wizard {
-	void attack(Character target, String spellName);
-	void support(Character target, String spellName);
+public abstract  class Wizard extends Character {
+	public Wizard(String name, int magicLevel, int healthPoints, int defense, double accuracy) {
+		super(name, magicLevel, healthPoints, defense, accuracy, CharacterType.WIZARD);
+	}
+	
+	void support(Character target, String spellName) {
+		
+	}
 }

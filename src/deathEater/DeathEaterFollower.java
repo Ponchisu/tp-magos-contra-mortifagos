@@ -4,7 +4,6 @@ package deathEater;
 import java.util.Random;
 
 import character.Character;
-import character.CharacterType;
 import spell.SpellCategory;
 import spellCreator.ConfundoCreator;
 import spellCreator.CrucioCreator;
@@ -16,7 +15,7 @@ import spellCreator.SpellCreator;
 import spellCreator.TempestJinxCreator;
 import spellCreator.TitillandoCreator;
 
-public class DeathEaterFollower extends Character implements DeathEater {
+public class DeathEaterFollower extends DeathEater {
 	public DeathEaterFollower() {
 		Random random = new Random();
 		SpellCreator spellCreator;
@@ -24,7 +23,7 @@ public class DeathEaterFollower extends Character implements DeathEater {
 		int healthPoints;
 		magicLevel = random.nextInt(15) + 16;
 		healthPoints = 1200 + (325 * magicLevel);
-		super("DeathEaterFollower", magicLevel, healthPoints, 230, 0.85, CharacterType.DEATHEATER);
+		super("DeathEaterFollower", magicLevel, healthPoints, 230, 0.85);
 		
 		
 		spellCreator = new  FerulaCreator();
