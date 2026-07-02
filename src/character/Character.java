@@ -1,8 +1,11 @@
 package character;
 // Representa a un personaje del juego con atributos, estados y hechizos.
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 import spell.Spell;
 import spell.SpellType;
@@ -47,6 +50,14 @@ public abstract class Character {
 		spells = new HashSet<Spell>();
 		
 		number ++;
+	}
+	
+	public void attack(Character target) {
+		List<Spell> spells = new ArrayList<Spell>(this.spells);
+		Random random = new Random();
+		System.out.println("###########################################################################\n");		
+		state = state.castSpell(this, target, spells.get(random.nextInt(spells.size())));
+		System.out.println("");
 	}
 	
 	public void attack(Character target, String spellName) {
@@ -227,7 +238,7 @@ public abstract class Character {
 			throw new InvalidSpellTypeException("El hechizo no es de tipo " + type);
 		}
 		if(!spells.contains(spell)) {
-			throw new SpellTypeException(name + " no posee ese hechizo");
+			throw new SpellTypeException(name + " no posee el hechizo " + spellName);
 		}
 		if(spell.getType() == SpellType.OFFENSIVE && target == this) {
 			throw new AutoAttackException("No se puede lanzar un hechizo ofensivo sobre uno mismo");
@@ -261,11 +272,14 @@ public abstract class Character {
 		Character other = (Character) obj;
 		return magicLevel == other.magicLevel && Objects.equals(name, other.name);
 	}
-
-	public abstract int getBattalionSize();
-
-	public Character get(int index) {
-	    throw new UnsupportedOperationException();
+	
+	public Character pickTarget(Random random) {
+	    return this;
 	}
 
+	@Override
+	public String toString() {
+		return "Character [name=" + name + ", magicLevel=" + magicLevel + ", healthPoints=" + healthPoints
+				+ ", defense=" + defense + ", accuracy=" + accuracy + ", state=" + state + ", spells=" + spells + "]";
+	}
 }

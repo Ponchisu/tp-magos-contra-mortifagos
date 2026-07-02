@@ -17,8 +17,9 @@ class WizardStudentTest {
 		d.attack(w, "Sectumsempra");
 		w.attack(d, "Sectumsempra");
 		
-		System.out.println(w.getName() + " lvl:" + w.getMagicLevel());
-		System.out.println(d.getName() + " lvl:" + d.getMagicLevel());
+		System.out.println(w
+				);
+		System.out.println(d);
 
 	}
 

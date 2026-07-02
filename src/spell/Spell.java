@@ -52,4 +52,9 @@ public abstract class Spell {
 		Spell other = (Spell) obj;
 		return Objects.equals(name, other.name);
 	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

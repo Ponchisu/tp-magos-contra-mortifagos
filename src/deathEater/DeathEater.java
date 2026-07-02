@@ -1,6 +1,10 @@
 package deathEater;
 // Representa a un mortífago dentro del combate.
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import character.Character;
 import character.CharacterType;
 import spell.Spell;
@@ -11,12 +15,18 @@ public abstract class DeathEater extends Character {
 		super(name, magicLevel, healthPoints, defense, accuracy, CharacterType.DEATHEATER);
 	}
 	
-	void attack(Character target) {
-		
+	public void specialSpell(Character target) {
+		List<Spell> spells = new ArrayList<Spell>(this.getSpells());
+		Random random = new Random();
+		System.out.println("###########################################################################\n");		
+		state = state.castSpell(this, target, spells.get(random.nextInt(spells.size())));
+		System.out.println("");
 	}
 	
-	void specialSpell(Character target) {
-		
+	public void specialSpell(Character target, String spellName) {
+		Spell spell = validCastSpell(target, spellName, SpellType.SPECIAL);
+		System.out.println("###########################################################################\n");		
 		state = state.castSpell(this, target, spell);
+		System.out.println("");
 	}
 }

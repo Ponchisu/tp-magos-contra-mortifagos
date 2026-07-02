@@ -8,19 +8,19 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import character.Character;
+import character.CharacterType;
+import exceptions.AllyFireException;
 import spell.Spell;
 import spell.SpellCategory;
 import spell.SpellType;
 
 public class BattalionWizard extends Wizard {
-	private List<Wizard> wizards;
-	
-	// Historial de hechizos lanzados por cada personaje
+	private Set<Wizard> wizards;
 	private Map<Wizard, List<Spell>> spellHistory;
 
 	public BattalionWizard() {
 		super("BattalionWizard", 0, 0, 0, 0);
-		wizards = new ArrayList<Wizard>();
+		wizards = new HashSet<Wizard>();
 	}
 	
 	public boolean addWizard(Wizard wizard) {
@@ -29,21 +29,25 @@ public class BattalionWizard extends Wizard {
 	
 	@Override
 	public void attack(Character target) {
+		System.out.println("###########################################################################\n");
+		System.out.println(this.getName() + "\n");
+		System.out.println("###########################################################################\n");
+		
+		if(target.getType() == CharacterType.WIZARD) {
+			throw new AllyFireException("No se puede atacar a un aliado");
+		}
+		
 
 	    Set<Spell> usedSpells = new HashSet<>();
 	    Random random = new Random();
 
 		//Recorre los personajes
 	    for (Wizard wizard : wizards) {
-			//Selecciona un objetivo aleatorio del batallon enemigo
-	        Character objective =
-	                target.get(random.nextInt(target.getBattalionSize()));
+			System.out.println("-----------------------------------------------------------\n");
+	    	Character objective = target.pickTarget(random);
 
 			//Seleccion un hechizo aleatorio disponible
-	        Spell spell = getRandomSpell(
-	                wizard,
-	                SpellType.OFFENSIVE,
-	                usedSpells);
+	        Spell spell = getRandomSpell(wizard, SpellType.OFFENSIVE, usedSpells);
 
 	        if (spell == null) {
 	            continue;
@@ -59,24 +63,48 @@ public class BattalionWizard extends Wizard {
 			spellHistory.get(wizard).add(spell);
 			//Se realiza la accion
 			wizard.attack(objective, spell.getName());
+			System.out.println("---------------------------------------------------------------------------\n");
 		}
+		System.out.println("###########################################################################\n");
+	}
+	
+	@Override
+	public void attack(Character target, String spellName) {
+		System.out.println("###########################################################################\n");
+		System.out.println(this.getName() + "\n");
+		System.out.println("###########################################################################\n");
+		
+		for(Wizard wizard : wizards) {
+			System.out.println("---------------------------------------------------------------------------\n");
+			try {
+				wizard.attack(target, spellName);				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			System.out.println("---------------------------------------------------------------------------\n");
+		}
+		System.out.println("###########################################################################\n");
 	}
 	
 	@Override
 	public void support(Character target) {
+		System.out.println("###########################################################################\n");
+		System.out.println(this.getName() + "\n");
+		System.out.println("###########################################################################\n");
+		
+		if(target.getType() == CharacterType.DEATHEATER) {
+			throw new AllyFireException("No se puede ayudar a un enemigo");
+		}
 		
 	    Set<Spell> usedSpells = new HashSet<>();
 	    Random random = new Random();
 		//Recorre los personajes
 	    for (Wizard wizard : wizards) {
-			//Selecciona un objetivo aleatorio del batallon enemigo
-	        Character objective =
-	                target.get(random.nextInt(target.getBattalionSize()));
+			System.out.println("---------------------------------------------------------------------------\n");
+	    	Character objective = target.pickTarget(random);
+
 			//Seleccion un hechizo aleatorio disponible
-	        Spell spell = getRandomSpell(
-	                wizard,
-	                SpellType.SUPPORT,
-	                usedSpells);
+	        Spell spell = getRandomSpell(wizard, SpellType.SUPPORT, usedSpells);
 
 	        if (spell == null) {
 	            continue;
@@ -90,8 +118,28 @@ public class BattalionWizard extends Wizard {
 			
 			spellHistory.get(wizard).add(spell);
 			//Se realiza la accion
-			wizard.attack(objective, spell.getName());
+			wizard.support(objective, spell.getName());
+			System.out.println("---------------------------------------------------------------------------\n");
 		}
+		System.out.println("###########################################################################\n");
+	}
+	
+	@Override
+	public void support(Character target, String spellName) {
+		System.out.println("###########################################################################\n");
+		System.out.println(this.getName() + "\n");
+		System.out.println("###########################################################################\n");
+		
+		for(Wizard wizard : wizards) {
+			System.out.println("---------------------------------------------------------------------------\n");
+			try {
+				wizard.support(target, spellName);				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			System.out.println("---------------------------------------------------------------------------\n");
+		}
+		System.out.println("###########################################################################\n");
 	}
 
 	private Spell getRandomSpell(Wizard wizard, SpellType type, Set<Spell> usedSpells) {
@@ -110,6 +158,15 @@ public class BattalionWizard extends Wizard {
 
 	    Random random = new Random();
 	    return availableSpells.get(random.nextInt(availableSpells.size()));
+	}
+	
+	public int getBattalionSize() {
+		return wizards.size();
+	}
+
+	public Character get(int index) {
+		List<Wizard> wizardsList = new ArrayList<Wizard>(wizards);
+	    return wizardsList.get(index);
 	}
 
 	@Override
@@ -288,32 +345,36 @@ public class BattalionWizard extends Wizard {
 		}
 	}
 	
+	@Override
 	public void electrocute(int electricDamage, int duration) {
 		for(Wizard wizard : wizards) {
 			wizard.electrocute(electricDamage, duration);
 		}
 	}
 	
+	@Override
 	public void healing(int health) {
 		for(Wizard wizard : wizards) {
 			wizard.healing(health);
 		}
 	}
 	
+	@Override
 	public void confuse(int duration) {
 		for(Wizard wizard : wizards) {
 			wizard.confuse(duration);
 		}
 	}
-
+	
 	@Override
-	public int getBattalionSize() {
-		return wizards.size();
+	public Character pickTarget(Random random) {
+	    return get(random.nextInt(getBattalionSize()));
 	}
 
 	@Override
-	public Character get(int index) {
-	    return wizards.get(index);
+	public String toString() {
+		return getName() + "\n[wizards=" + wizards + "]";
 	}
-
+	
+	
 }

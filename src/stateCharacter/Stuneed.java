@@ -96,4 +96,9 @@ public class Stuneed extends StateCharacter {
 		character.healthUp(health);
 		return this;
 	}
+	
+	@Override
+	public String toString() {
+		return "Stuneado";
+	}
 }

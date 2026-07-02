@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import character.Character;
+import character.CharacterType;
+import exceptions.AllyFireException;
 import spell.Spell;
 import spell.SpellCategory;
 import spell.SpellType;
@@ -25,71 +27,116 @@ public class BattalionDeathEater extends DeathEater {
 
 	@Override
 	public void attack(Character target) {
+		System.out.println("###########################################################################\n");
+		System.out.println(this.getName() + "\n");
+		System.out.println("###########################################################################\n");
+
+		if(target.getType() == CharacterType.DEATHEATER) {
+			throw new AllyFireException("No se puede atacar a un aliado");
+		}
 
 	    Set<Spell> usedSpells = new HashSet<>();
 	    Random random = new Random();
 
 		//Recorre los personajes
-	    for (DeathEater deathEater : deathEaters) {
-			//Selecciona un objetivo aleatorio del batallon enemigo
-	        Character objective =
-	                target.get(random.nextInt(target.getBattalionSize()));
+	    for(DeathEater deathEater : deathEaters) {
+			System.out.println("---------------------------------------------------------------------------\n");
+	    	Character objective = target.pickTarget(random);
 
 			//Seleccion un hechizo aleatorio disponible
-	        Spell spell = getRandomSpell(
-	                deathEater,
-	                SpellType.OFFENSIVE,
-	                usedSpells);
+	        Spell spell = getRandomSpell(deathEater, SpellType.OFFENSIVE, usedSpells);
 
-	        if (spell == null) {
+	        if(spell == null) {
 	            continue;
 	        }
 
 			//Agrega el hechizo a los historiales
 	        usedSpells.add(spell);
 
-	        if (!spellHistory.containsKey(deathEater)) {
+	        if(!spellHistory.containsKey(deathEater)) {
 			    spellHistory.put(deathEater, new ArrayList<>());
 			}
 
 			spellHistory.get(deathEater).add(spell);
 			//Se realiza la accion
 			deathEater.attack(objective, spell.getName());
-		}		
+			System.out.println("---------------------------------------------------------------------------\n");
+		}
+		System.out.println("###########################################################################\n");
+	}
+	
+	@Override
+	public void attack(Character target, String spellName) {
+		System.out.println("###########################################################################\n");
+		System.out.println(this.getName() + "\n");
+		System.out.println("###########################################################################\n");
+
+		for(DeathEater deathEater : deathEaters) {
+			System.out.println("---------------------------------------------------------------------------\n");
+			try {
+				deathEater.attack(target, spellName);				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			System.out.println("---------------------------------------------------------------------------\n");
+		}
+		System.out.println("###########################################################################\n");
 	}
 
 	@Override
 	public void specialSpell(Character target)  {
-		Set<Spell> usedSpells = new HashSet<>();
+		System.out.println("###########################################################################\n");
+		System.out.println(this.getName() + "\n");
+		System.out.println("###########################################################################\n");
+		
+		if(target.getType() == CharacterType.DEATHEATER) {
+			throw new AllyFireException("No se puede atacar a un aliado");
+		}
+
+	    Set<Spell> usedSpells = new HashSet<>();
 	    Random random = new Random();
 
 		//Recorre los personajes
-	    for (DeathEater deathEater : deathEaters) {
-			//Selecciona un objetivo aleatorio del batallon enemigo
-	        Character objective =
-	                target.get(random.nextInt(target.getBattalionSize()));
+	    for(DeathEater deathEater : deathEaters) {
+			System.out.println("---------------------------------------------------------------------------\n");
+	    	Character objective = target.pickTarget(random);
 
 			//Seleccion un hechizo aleatorio disponible
-	        Spell spell = getRandomSpell(
-	                deathEater,
-	                SpellType.SPECIALSPELL,
-	                usedSpells);
+	        Spell spell = getRandomSpell(deathEater, SpellType.SPECIAL, usedSpells);
 
-	        if (spell == null) {
+	        if(spell == null) {
 	            continue;
 	        }
 
 			//Agrega el hechizo a los historiales
 	        usedSpells.add(spell);
 
-	        if (!spellHistory.containsKey(deathEater)) {
+	        if(!spellHistory.containsKey(deathEater)) {
 			    spellHistory.put(deathEater, new ArrayList<>());
 			}
 
 			spellHistory.get(deathEater).add(spell);
 			//Se realiza la accion
 			deathEater.attack(objective, spell.getName());
+			System.out.println("---------------------------------------------------------------------------\n");
 		}
+		System.out.println("###########################################################################\n");
+	}
+	
+	@Override
+	public void specialSpell(Character target, String spellName) {
+		System.out.println("###########################################################################\n");
+		System.out.println(this.getName() + "\n");
+		System.out.println("###########################################################################\n");
+		
+		for(DeathEater deathEater : deathEaters) {
+			try {
+				deathEater.attack(target, spellName);				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+		}
+		System.out.println("###########################################################################\n");
 	}
 
 	private Spell getRandomSpell(DeathEater deathEater, SpellType type, Set<Spell> usedSpells) {
@@ -108,6 +155,14 @@ public class BattalionDeathEater extends DeathEater {
 
 	    Random random = new Random();
 	    return availableSpells.get(random.nextInt(availableSpells.size()));
+	}
+	
+	public int getBattalionSize() {
+		return deathEaters.size();
+	}
+
+	public Character get(int index) {
+	    return deathEaters.get(index);
 	}
 	
 	@Override
@@ -286,18 +341,21 @@ public class BattalionDeathEater extends DeathEater {
 		}
 	}
 	
+	@Override
 	public void electrocute(int electricDamage, int duration) {
 		for(DeathEater deathEater : deathEaters) {
 			deathEater.electrocute(electricDamage, duration);
 		}
 	}
 	
+	@Override
 	public void healing(int health) {
 		for(DeathEater deathEater : deathEaters) {
 			deathEater.healing(health);
 		}
 	}
 	
+	@Override
 	public void confuse(int duration) {
 		for(DeathEater deathEater : deathEaters) {
 			deathEater.confuse(duration);
@@ -305,13 +363,12 @@ public class BattalionDeathEater extends DeathEater {
 	}
 
 	@Override
-	public int getBattalionSize() {
-		return deathEaters.size();
+	public Character pickTarget(Random random) {
+	    return get(random.nextInt(getBattalionSize()));
 	}
 
 	@Override
-	public Character get(int index) {
-	    return deathEaters.get(index);
-	}
-
+	public String toString() {
+		return getName() + "\n[deathEaters=" + deathEaters + "]";
+	}	
 }

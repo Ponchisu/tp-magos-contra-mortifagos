@@ -79,4 +79,9 @@ public class Invulnerable extends StateCharacter {
 		
 		return new Idle();
 	}
+	
+	@Override
+	public String toString() {
+		return "invulnerable";
+	}
 }

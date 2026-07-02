@@ -15,4 +15,8 @@ public class Death extends StateCharacter {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return "Muerto";
+	}
 }

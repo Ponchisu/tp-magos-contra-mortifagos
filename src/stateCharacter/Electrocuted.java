@@ -106,4 +106,9 @@ public class Electrocuted extends StateCharacter {
 		System.out.println(character.getName() + " esta confundido por " + duration + " turnos");
 		return new Confused(duration);
 	}
+	
+	@Override
+	public String toString() {
+		return "Electrocutado";
+	}
 }
