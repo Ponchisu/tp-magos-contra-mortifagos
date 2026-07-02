@@ -92,7 +92,7 @@ public abstract class Character {
 		}
 		
 		defenseNerfDuration = duration;
-		defenseNerf = defense * -1;
+		defenseNerf = defense;
 		System.out.println("La defensa de " + name + " disminuyo " + defense + " puntos durante " + duration + " turnos -- Defensa total: " + getDefense());
 
 	}
